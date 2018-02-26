@@ -1,0 +1,50 @@
+.framework {
+  min-height: 900px
+}
+
+.framework-header {
+  width: 100%;
+  overflow: hidden
+}
+
+.framework-header-title {
+  float: left;
+  padding-top: 10px;
+  margin-left: 1%;
+  height: 30px;
+}
+
+.framework-header-user {
+  float: right;
+  padding-top: 10px;
+  margin-right: 1%
+}
+
+.framework-header-text-color {
+  color: #999999
+}
+
+.framework-header-title-text-color {
+  color: #fff
+}
+
+.framework-header-background-color {
+  background-color: #222222;
+}
+
+.framework-menu {
+  min-height: 900px;
+  background-color: #EBEBEB
+}
+
+.framework-content {
+  padding: 5px;
+  min-height: 900px
+}
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
