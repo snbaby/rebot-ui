@@ -3,7 +3,9 @@ import Router from 'vue-router';
 import Login from '@/views/common/Login';
 import Rebot from '@/views/common/Rebot';
 import Overview from '@/views/business/Overview';
+import System from '@/views/business/System';
 import TemplateManager from '@/views/business/TemplateManager';
+import Intelligent from '@/views/business/Intelligent';
 import InspectionRegistration from '@/views/business/InspectionRegistration';
 import EquipmentInspection from '@/views/business/EquipmentInspection';
 import DataExport from '@/views/business/DataExport';
@@ -35,6 +37,7 @@ export const constantRouterMap = [
         name: '系统配置管理',
         path: 'system',
         redirect: '/rebot/system/template_manager',
+        component: System,
         children: [
           {
             name: '操作系统模板管理',
@@ -46,6 +49,7 @@ export const constantRouterMap = [
       {
         name: '智能验机',
         path: 'intelligent',
+        component: Intelligent,
         redirect: '/rebot/intelligent/inspection_registration',
         children: [
           {

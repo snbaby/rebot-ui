@@ -104,11 +104,6 @@ body,
   border-radius: 50%;
 }
 
-.nav {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
 .body-content {
   background: none repeat scroll 0 0 #fff;
   position: absolute;
@@ -121,11 +116,10 @@ body,
   box-sizing: border-box;
   overflow-y: scroll;
 }
-.content {
-  padding-top: 20px;
-}
 
 .divide {
   height: 1px;
   border-top: 1px solid #ddd;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }

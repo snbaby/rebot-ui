@@ -3,15 +3,11 @@
     <v-head></v-head>
     <v-sidebar :routes="frameworkRoutes"></v-sidebar>
     <div class="body-content">
-      <div class="nav">
-        <v-breadcrumb :breadcrumbs="$route.matched.slice(1)"></v-breadcrumb>
-      </div>
+      <v-breadcrumb :breadcrumbs="$route.matched.slice(1)"></v-breadcrumb>
       <v-divide></v-divide>
-      <div class="content">
-        <transition name="move" mode="out-in">
-          <router-view></router-view>
-        </transition>
-      </div>
+      <transition name="move" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -25,8 +21,7 @@ import vBreadcrumb from '../../components/framework/Breadcrumb';
 
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   components: {
     vHead,
