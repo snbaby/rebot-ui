@@ -1,14 +1,16 @@
 <template>
   <div class="total_img_box">
     <div class="left">
-      <img class="img"  src="../../../static/default/images/u001.png" alt="" />
+      <div class="content">
+        <img class="img"  src="../../../static/default/images/u001.png" alt="" />
+      </div>
     </div>
     <div class="right">
       <div class="title">
-        {{title}}
+        <p>{{title}}</p>
       </div>
       <div class="number">
-        {{number}}
+        <p>{{number}}</p>
       </div>
     </div>
   </div>

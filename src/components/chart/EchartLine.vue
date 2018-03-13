@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :id="id" :style="{height:height,width:width}" ref="line">
+  <div  :style="{height:height,width:width}" :ref="lineId">
   </div>
 </template>
 
@@ -7,22 +7,27 @@
 import echarts from 'echarts';
 
 export default {
+  name: 'vEchartLine',
   props: {
-    className: {
+    lineId: {
       type: String,
-      default: 'yourClassName',
-    },
-    id: {
-      type: String,
-      default: 'yourID',
+      required: true,
     },
     width: {
       type: String,
-      default: '500px',
+      default: '562px',
     },
     height: {
       type: String,
-      default: '500px',
+      default: '329px',
+    },
+    xAxisData: {
+      type: Array,
+      default: () => (['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']),
+    },
+    seriesData: {
+      type: Array,
+      default: () => ([820, 932, 901, 934, 1290, 1330, 1320]),
     },
   },
   data() {
@@ -42,17 +47,17 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$refs.line);
+      this.chart = echarts.init(this.$refs[this.lineId]);
       const option = {
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: this.xAxisData,
         },
         yAxis: {
           type: 'value',
         },
         series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          data: this.seriesData,
           type: 'line',
         }],
       };
