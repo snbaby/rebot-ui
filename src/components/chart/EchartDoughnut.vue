@@ -1,20 +1,19 @@
 <template>
-  <div :class="className" :id="id" :style="{height:height,width:width}" ref="doughnut">
+  <div :style="{height:height,width:width}" ref="doughnutRef">
   </div>
 </template>
 
 <script>
 import echarts from 'echarts';
 
+const _ = require('underscore');
+
 export default {
+  name: 'vEchartDoughnut',
   props: {
-    className: {
+    doughnutRef: {
       type: String,
-      default: 'yourClassName',
-    },
-    id: {
-      type: String,
-      default: 'yourID',
+      default: 'doughnutRef',
     },
     width: {
       type: String,
@@ -22,7 +21,50 @@ export default {
     },
     height: {
       type: String,
-      default: '500px',
+      default: '360px',
+    },
+    doughnutData: {
+      type: Object,
+      default: () => {
+        const dataResult = [{
+          name: '司信息(15)',
+          value: 50,
+          finished: 50,
+          unfinished: 50,
+          finishedRate: '50%',
+        }, {
+          name: '司信息(16)',
+          value: 50,
+          finished: 50,
+          unfinished: 50,
+          finishedRate: '50%',
+        }, {
+          name: '司信息(17)',
+          value: 50,
+          finished: 50,
+          unfinished: 50,
+          finishedRate: '50%',
+        }, {
+          name: '司信息(18)',
+          value: 50,
+          finished: 50,
+          unfinished: 50,
+          finishedRate: '50%',
+        }, {
+          name: '司信息(19)',
+          value: 50,
+          finished: 50,
+          unfinished: 50,
+          finishedRate: '50%',
+        }];
+        return {
+          data: dataResult,
+          formatter: (name) => {
+            const result = _.find(dataResult, item => _.isEqual(item.name, name));
+            return (`合同号：${result.name}`);
+          },
+        };
+      },
     },
   },
   data() {
@@ -42,20 +84,26 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$refs.doughnut);
+      this.chart = echarts.init(this.$refs[this.doughnutRef]);
       const option = {
+        title: {
+          text: '验机情况',
+          x: 'left',
+        },
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)',
+          formatter: '合同号：{b} <br/> 完成数：{c} <br/> 总完成比率：({d}%)',
         },
         legend: {
           orient: 'vertical',
-          x: 'left',
-          data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎'],
+          y: 'center',
+          right: 10,
+          formatter: this.doughnutData.formatter,
+          data: _.pluck(this.doughnutData.data, 'name'),
         },
         series: [
           {
-            name: '访问来源',
+            name: '信息',
             type: 'pie',
             radius: ['50%', '70%'],
             avoidLabelOverlap: false,
@@ -77,13 +125,7 @@ export default {
                 show: false,
               },
             },
-            data: [
-              { value: 335, name: '直接访问' },
-              { value: 310, name: '邮件营销' },
-              { value: 234, name: '联盟广告' },
-              { value: 135, name: '视频广告' },
-              { value: 1548, name: '搜索引擎' },
-            ],
+            data: this.doughnutData.data,
           },
         ],
       };

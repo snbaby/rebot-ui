@@ -1,5 +1,5 @@
 <template>
-  <div  :style="{height:height,width:width}" :ref="lineId">
+  <div  :style="{height:height,width:width}" :ref="lineRef">
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import echarts from 'echarts';
 export default {
   name: 'vEchartLine',
   props: {
-    lineId: {
+    lineRef: {
       type: String,
       required: true,
     },
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$refs[this.lineId]);
+      this.chart = echarts.init(this.$refs[this.lineRef]);
       const option = {
         xAxis: {
           type: 'category',

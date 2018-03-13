@@ -2,7 +2,7 @@
   <div>
     <el-row >
       <el-col :span="10" align="left">
-        <v-echart-line lineId="data_export_line_year"></v-echart-line>
+        <v-echart-line lineRef="data_export_line_year"></v-echart-line>
       </el-col>
       <el-col :span="4" align="center">
         <div style="height: 330px;display: table-cell;vertical-align: middle">
@@ -10,7 +10,7 @@
         </div>
       </el-col>
       <el-col :span="10" align="right">
-        <v-echart-line lineId="data_export_line_year"></v-echart-line>
+        <v-echart-line lineRef="data_export_line_year"></v-echart-line>
       </el-col>
     </el-row>
     <el-row>
