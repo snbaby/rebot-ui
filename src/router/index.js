@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Login from '@/views/common/Login';
-import Rebot from '@/views/common/Rebot';
-import Overview from '@/views/business/Overview';
-import System from '@/views/business/System';
-import TemplateManager from '@/views/business/TemplateManager';
-import Intelligent from '@/views/business/Intelligent';
-import InspectionRegistration from '@/views/business/InspectionRegistration';
-import EquipmentInspection from '@/views/business/EquipmentInspection';
-import DataExport from '@/views/business/DataExport';
+import Login from '../views/common/Login';
+import Rebot from '../views/common/Rebot';
+import Overview from '../views/business/Overview';
+import System from '../views/business/System';
+import TemplateManager from '../views/business/TemplateManager';
+import Intelligent from '../views/business/Intelligent';
+import InspectionRegistration from '../views/business/InspectionRegistration';
+import EquipmentInspection from '../views/business/EquipmentInspection';
+import DataExport from '../views/business/DataExport';
 
 Vue.use(Router);
 

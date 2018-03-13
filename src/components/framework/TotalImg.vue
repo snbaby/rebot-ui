@@ -5,10 +5,10 @@
     </div>
     <div class="right">
       <div class="title">
-        模板总数
+        {{title}}
       </div>
       <div class="number">
-        245
+        {{number}}
       </div>
     </div>
   </div>
@@ -16,57 +16,15 @@
 <script>
 export default {
   name: 'vTotalImg',
+  props: {
+    title: {
+      type: String,
+      default: 'title',
+    },
+    number: {
+      type: String,
+      default: '0',
+    },
+  },
 };
 </script>
-<style scoped>
-  .total_img_box {
-    width: 200px;
-    height: 112px;
-    background: inherit;
-    background-color: rgba(255, 255, 255, 1);
-    box-sizing: border-box;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgba(235, 235, 235, 1);
-    border-radius: 6px;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-  .total_img_box .left {
-    float: left;
-    position: relative;
-    left: 18px;
-    top: 24px;
-    width: 64px;
-    height: 64px;
-    color: #FFFFFF;
-    background-color: #2db6f4;
-    border-radius: 50%;
-  }
-
-  .total_img_box .left .img {
-    padding-left: 18px;
-    padding-top: 16px;
-  }
-
-  .total_img_box .right {
-    float: right;
-    position: relative;
-    right: 18px;
-    top: 24px;
-    width: 64px;
-    height: 64px;
-  }
-
-  .total_img_box .right .title {
-    color: #989898;
-    font-size: 12px;
-  }
-
-  .total_img_box .right .number {
-    font-weight: 500;
-    font-size: 32px;
-    color: #666666;
-  }
-</style>

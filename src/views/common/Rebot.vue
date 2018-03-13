@@ -33,8 +33,6 @@ export default {
     ...mapState('framework', ['frameworkRoutes']),
   },
   created() {
-    console.log(this.$route);
-    console.log(this.$route.matched);
   },
 };
 </script>
