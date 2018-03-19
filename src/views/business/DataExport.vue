@@ -1,16 +1,18 @@
 <template>
   <div>
     <el-row >
-      <el-col :span="10" align="left">
-        <v-echart-line lineRef="data_export_line_year"></v-echart-line>
+      <el-col :span="8" align="center">
+        <v-echart-line lineRef="data_export_line_year" titleName="年度验机趋势" width="100%"
+                       :xAxisData="xAxisDataYear" :seriesData="seriesDataYear" height="300px">
+        </v-echart-line>
       </el-col>
-      <el-col :span="4" align="center">
-        <div style="height: 330px;display: table-cell;vertical-align: middle">
+      <el-col :span="8" align="center">
+        <div style="height: 300px;display: table-cell;vertical-align: middle">
           <v-total-img title="历史总验机" number="64518"></v-total-img>
         </div>
       </el-col>
-      <el-col :span="10" align="right">
-        <v-echart-line lineRef="data_export_line_year"></v-echart-line>
+      <el-col :span="8" align="center">
+        <v-echart-line lineRef="data_export_line_week" width="100%"  height="300px"></v-echart-line>
       </el-col>
     </el-row>
     <el-row>
@@ -79,6 +81,8 @@ import vTotalImg from '../../components/framework/TotalImg';
 export default {
   data() {
     return {
+      // xAxisDataYear: ['1', '2', '3', '4', '5', '6', '7'],
+      // seriesDataYear: [820, 932, 901, 934, 1290, 1330, 1320],
       tableData: [{
         inspectionTime: (new Date()).toLocaleDateString(),
         equipmentNumber: 'JPC-001',

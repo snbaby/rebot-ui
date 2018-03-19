@@ -61,7 +61,7 @@ export default {
           data: dataResult,
           formatter: (name) => {
             const result = _.find(dataResult, item => _.isEqual(item.name, name));
-            return (`合同号：${result.name}`);
+            return (`合同号：${result.name}  `);
           },
         };
       },
@@ -97,15 +97,16 @@ export default {
         legend: {
           orient: 'vertical',
           y: 'center',
-          right: 10,
+          x: '55%',
           formatter: this.doughnutData.formatter,
           data: _.pluck(this.doughnutData.data, 'name'),
         },
         series: [
           {
+            center: ['30%', '50%'],
             name: '信息',
             type: 'pie',
-            radius: ['50%', '70%'],
+            radius: ['30%', '45%'],
             avoidLabelOverlap: false,
             label: {
               normal: {
@@ -113,11 +114,7 @@ export default {
                 position: 'center',
               },
               emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: '30',
-                  fontWeight: 'bold',
-                },
+                show: false,
               },
             },
             labelLine: {

@@ -15,7 +15,7 @@
           </el-input>
         </el-form-item>
         <!-- `checked` 为 true 或 false -->
-        <!-- <el-checkbox v-model="checked">记住密码</el-checkbox> -->
+         <!--<el-checkbox v-model="checked">记住密码</el-checkbox>-->
         <div class="login-btn">
           <el-button :loading="loading"  @click.native.prevent="handleLogin">登录</el-button>
         </div>

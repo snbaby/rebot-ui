@@ -1,25 +1,25 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="4">
+      <el-col :span="8">
         <v-total-img title="当前待验机总数" number="245"></v-total-img>
       </el-col>
-      <el-col :span="5" align="middle">
+      <el-col :span="4" >
         <v-total-number :bgColor="{ 'background-color': '#000000' }"
                       title="已验" number="9">
         </v-total-number>
       </el-col>
-      <el-col :span="5" align="middle">
+      <el-col :span="4" >
         <v-total-number :bgColor="{ 'background-color': 'rgba(45, 182, 244, 1)' }"
                         title="在验" number="1">
         </v-total-number>
       </el-col>
-      <el-col :span="5" align="middle">
+      <el-col :span="4" >
         <v-total-number :bgColor="{ 'background-color': '#000000' }"
                         title="已确认" number="6">
         </v-total-number>
       </el-col>
-      <el-col :span="5" align="right">
+      <el-col :span="4" >
         <v-total-number :bgColor="{ 'background-color': 'rgba(45, 182, 244, 1)' }"
                         title="待确认" number="3">
         </v-total-number>

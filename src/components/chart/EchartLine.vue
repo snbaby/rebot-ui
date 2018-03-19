@@ -1,5 +1,5 @@
 <template>
-  <div  :style="{height:height,width:width}" :ref="lineRef">
+  <div :style="{height:height,width:width}" :ref="lineRef">
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
     },
     width: {
       type: String,
-      default: '562px',
+      default: '528px',
     },
     height: {
       type: String,
@@ -28,6 +28,10 @@ export default {
     seriesData: {
       type: Array,
       default: () => ([820, 932, 901, 934, 1290, 1330, 1320]),
+    },
+    titleName: {
+      type: String,
+      default: '本周趋势',
     },
   },
   data() {
@@ -49,12 +53,23 @@ export default {
     initChart() {
       this.chart = echarts.init(this.$refs[this.lineRef]);
       const option = {
+        title: {
+          text: this.titleName,
+        },
         xAxis: {
           type: 'category',
+          axisLabel: {
+            interval: 0,
+            rotate: 45,
+            margin: 2,
+          },
           data: this.xAxisData,
         },
         yAxis: {
           type: 'value',
+        },
+        grid: {
+          left: 45,
         },
         series: [{
           data: this.seriesData,
@@ -65,5 +80,6 @@ export default {
       this.chart.setOption(option);
     },
   },
+
 };
 </script>
