@@ -1,11 +1,11 @@
 import { Loading } from 'element-ui';
+import '../../static/default/css/framework.css';
 import _ from 'lodash';
 
 let needLoadingRequestCount = 0;
 let loading;
 
 function startLoading() {
-  console.log('startLoading =============');
   loading = Loading.service({
     lock: true,
     text: '加载中……',
@@ -14,7 +14,6 @@ function startLoading() {
 }
 
 function endLoading() {
-  console.log('endLoading==========');
   loading.close();
 }
 
@@ -22,18 +21,18 @@ const tryCloseLoading = () => {
   if (needLoadingRequestCount === 0) {
     endLoading();
   }
-}
+};
 
 export function showFullScreenLoading() {
   if (needLoadingRequestCount === 0) {
     startLoading();
   }
-  needLoadingRequestCount++;
+  needLoadingRequestCount += 1;
 }
 
 export function tryHideFullScreenLoading() {
   if (needLoadingRequestCount <= 0) return;
-  needLoadingRequestCount--;
+  needLoadingRequestCount -= 1;
   if (needLoadingRequestCount === 0) {
     _.debounce(tryCloseLoading, 300)();
   }

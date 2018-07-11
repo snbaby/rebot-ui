@@ -112,11 +112,10 @@ export default {
     this.queryPage();
   },
   methods: {
-    handleAvatarSuccess(response, file, fileList) {
-      console.log(response, file, fileList);
+    handleAvatarSuccess(response, file) {
       this.$notify.success({
         title: '成功',
-        message: '这是一条成功的提示消息',
+        message: `上传文件 ${file.name} 成功`,
       });
     },
     handleAvatarError(err, file) {
@@ -140,7 +139,7 @@ export default {
         endTime: '',
       };
       api.get('/contract/page', params).then((res) => {
-        console.log(res);
+        console.log('res',res);
       });
     },
   },

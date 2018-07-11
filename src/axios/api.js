@@ -1,44 +1,43 @@
 import axios from 'axios';
-import { Notification } from 'element-ui';
+import ElementUI from 'element-ui';
 
 import {
   showFullScreenLoading,
   tryHideFullScreenLoading,
 } from './axiosInitHelper';
 
-axios.defaults.baseURL = 'http://soc.seadun.com:8765'
+axios.defaults.baseURL = 'http://soc.seadun.com:8765';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.timeout = 10000;
 
 // 请求拦截器
 axios.interceptors.request.use(
   (config) => {
-    if (config.showLoading) {
-      showFullScreenLoading();
-    }
+    showFullScreenLoading();
     return config;
   },
-  (error) => {
-    Notification({
-      title: '成功',
-      message: '这是一条成功的提示消息',
-      type: 'success'
-    });
-    console.log(error);
-    Promise.reject(error);
-  },
+  error => Promise.reject(error)
+  ,
 );
 
 // 响应拦截器
 axios.interceptors.response.use(
   (response) => {
-    if (response.config.showLoading) {
-      tryHideFullScreenLoading();
-    }
-    return response;
+    tryHideFullScreenLoading();
+    return response.data;
   },
   (error) => {
-    console.log(error);
+    const resp = error.response;
+    let message = '';
+    if (resp && Object.prototype.hasOwnProperty.call(resp, 'data')) {
+      message = error.response.data.description;
+    } else {
+      message = '服务器或网络异常，请稍后重试！';
+    }
+    ElementUI.Notification.error({
+      title: '错误',
+      message: `请求错误,${message}`,
+    });
     tryHideFullScreenLoading();
     return Promise.reject(error);
   },
