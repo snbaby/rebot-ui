@@ -25,7 +25,16 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>验机登记</span>
-            <el-button class="btn_template_create" type="text">入库</el-button>
+            <el-upload
+              class="upload"
+              show-file-list
+              accept="application/vnd.ms-excel"
+              action="http://soc.seadun.com:8765/api/file"
+              :on-success="handleAvatarSuccess"
+              :on-error="handleAvatarError"
+              >
+              <el-button class="btn_template_create" type="text">入库</el-button>
+            </el-upload>
           </div>
           <el-row>
             <el-col>
@@ -76,101 +85,12 @@
 import vTotalImg from '../../components/framework/TotalImg';
 import vTotalRate from '../../components/framework/TotalRate';
 import vDivide from '../../components/framework/Divide';
+import api from './../../axios/api';
 
 export default {
   data() {
     return {
       tableData: [{
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }, {
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }, {
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }, {
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }, {
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }, {
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }, {
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }, {
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }, {
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }, {
         contractNumber: '0001',
         contractName: '办公大楼30#项目',
         contractTotal: '110',
@@ -187,6 +107,42 @@ export default {
     vTotalImg,
     vTotalRate,
     vDivide,
+  },
+  created() {
+    this.queryPage();
+  },
+  methods: {
+    handleAvatarSuccess(response, file, fileList) {
+      console.log(response, file, fileList);
+      this.$notify.success({
+        title: '成功',
+        message: '这是一条成功的提示消息',
+      });
+    },
+    handleAvatarError(err, file) {
+      let errMessage = '';
+      if (err && Object.prototype.hasOwnProperty.call(err, 'message')) {
+        errMessage = JSON.parse(err.message).description;
+      } else {
+        errMessage = '服务器异常';
+      }
+      this.$notify.error({
+        title: '错误',
+        message: `上传文件 ${file.name} 失败，${errMessage}`,
+      });
+    },
+    queryPage() {
+      const params = {
+        pageNo: 0,
+        pageSize: 10,
+        contract: '',
+        startTime: '',
+        endTime: '',
+      };
+      api.get('/contract/page', params).then((res) => {
+        console.log(res);
+      });
+    },
   },
 };
 </script>

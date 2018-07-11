@@ -126,8 +126,11 @@ body,
 }
 
 .btn_template_create {
-  float: right;
   padding: 3px 0
+}
+
+.upload {
+  float: right;
 }
 
 .total_rate_box {

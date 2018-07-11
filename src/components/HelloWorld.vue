@@ -9,8 +9,6 @@
 </template>
 
 <script>
-import api from './../axios/api';
-
 
 export default {
   name: 'HelloWorld',
@@ -20,15 +18,8 @@ export default {
     };
   },
   created() {
-    this.setNewsApi();
   },
   methods: {
-    setNews() {
-      api.JH_news('/news/index', 'type=top&key=123456')
-        .then((res) => {
-          this.newsListShow = res.articles;
-        });
-    },
   },
 };
 </script>
