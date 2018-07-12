@@ -1,5 +1,6 @@
 import { Loading } from 'element-ui';
 import '../../static/default/css/framework.css';
+// eslint-disable-next-line
 import _ from 'lodash';
 
 let needLoadingRequestCount = 0;

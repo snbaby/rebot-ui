@@ -8,7 +8,7 @@ import {
 
 axios.defaults.baseURL = 'http://soc.seadun.com:8765';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 60000;
 
 // 请求拦截器
 axios.interceptors.request.use(
@@ -60,6 +60,18 @@ export default {
   post(url, param) {
     return new Promise((resolve, reject) => {
       axios.post(url, {
+        data: param,
+      }).then((res) => {
+        resolve(res);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  // put请求
+  put(url, param) {
+    return new Promise((resolve, reject) => {
+      axios.put(url, {
         data: param,
       }).then((res) => {
         resolve(res);

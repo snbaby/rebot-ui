@@ -35,8 +35,7 @@ export default {
       default: 'title',
     },
     number: {
-      type: String,
-      default: '0',
+      type: Number,
     },
     rate: {
       type: String,

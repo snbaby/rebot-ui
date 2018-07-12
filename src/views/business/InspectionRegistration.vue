@@ -1,26 +1,6 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="8">
-        <v-total-img title="当前待验机总数" number="245"></v-total-img>
-      </el-col>
-      <el-col :span="8" align="middle">
-        <v-total-rate :bgColor="{ 'background-color': 'rgba(45, 182, 244, 1)' }"
-                      title="已完成" number="189" rate="61%">
-        </v-total-rate>
-      </el-col>
-      <el-col :span="8" align="right">
-        <v-total-rate :bgColor="{ 'background-color': '#000000' }"
-                      title="未完成" number="56" rate="39%">
-        </v-total-rate>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col>
-        <v-divide></v-divide>
-      </el-col>
-    </el-row>
-    <el-row>
       <el-col>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -41,27 +21,29 @@
               <el-table :data="tableData">
                 <el-table-column type="index" label="序号">
                 </el-table-column>
-                <el-table-column property="contractNumber" label="合同编号" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column property="contractName" label="合同名称" show-overflow-tooltip>
+                <el-table-column property="contract" label="合同编号" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column property="contractTotal" label="合同总数">
                 </el-table-column>
-                <el-table-column property="contractArrived" label="到货情况">
+                <el-table-column property="contractCompleteRate" label="完成率">
                 </el-table-column>
-                <el-table-column property="finishedRate" label="完成率">
+                <el-table-column property="contractComplete" label="已完成">
                 </el-table-column>
-                <el-table-column property="finished" label="已完成">
+                <el-table-column property="contractUnComplete" label="剩余">
                 </el-table-column>
-                <el-table-column property="unfinished" label="剩余">
-                </el-table-column>
-                <el-table-column property="finishedWeek" label="近一周验机数量">
+                <el-table-column property="contractCompleteLastWeek" label="近一周验机数量">
                 </el-table-column>
                 <el-table-column property="crtTime" label="添加时间">
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="状态">
                   <template slot-scope="scope">
-                    <el-button type="text">删除</el-button>
+                    <el-switch
+                      v-model="scope.row.status"
+                      active-value="YES"
+                      inactive-value="NO"
+                      @change="statusChange(scope.row.id, scope.row.status)"
+                    >
+                    </el-switch>
                   </template>
                 </el-table-column>
               </el-table>
@@ -70,8 +52,9 @@
           <el-row>
             <el-col>
               <el-pagination
+                @current-change="handleCurrentChange"
                 layout="total, prev, pager, next"
-                :total="10">
+                :total="total">
               </el-pagination>
             </el-col>
           </el-row>
@@ -86,21 +69,17 @@ import vTotalImg from '../../components/framework/TotalImg';
 import vTotalRate from '../../components/framework/TotalRate';
 import vDivide from '../../components/framework/Divide';
 import api from './../../axios/api';
+import utils from './../../util/utils';
+
+const async = require('async');
 
 export default {
   data() {
     return {
-      tableData: [{
-        contractNumber: '0001',
-        contractName: '办公大楼30#项目',
-        contractTotal: '110',
-        contractArrived: '100',
-        finishedRate: '90%',
-        finished: '90',
-        unfinished: '10',
-        finishedWeek: '78',
-        crtTime: (new Date()).toLocaleDateString(),
-      }],
+      tableData: [],
+      pageNo: 1,
+      pageSize: 10,
+      total: 0,
     };
   },
   components: {
@@ -130,16 +109,93 @@ export default {
         message: `上传文件 ${file.name} 失败，${errMessage}`,
       });
     },
+    statusChange(id, status) {
+      const self = this;
+      api.put(`/contract/${id}/${status}`, {}).then(() => {
+        self.queryPage();
+        self.$notify.success({
+          title: '成功',
+          message: '更改激活状态成功',
+        });
+      });
+    },
+    handleCurrentChange(val) {
+      this.pageNo = val;
+      this.queryPage();
+    },
     queryPage() {
-      const params = {
-        pageNo: 0,
-        pageSize: 10,
-        contract: '',
-        startTime: '',
-        endTime: '',
-      };
-      api.get('/contract/page', params).then((res) => {
-        console.log('res',res);
+      const self = this;
+      async.waterfall([
+        (cbWaterfall) => {
+          const params = {
+            pageNo: self.pageNo,
+            pageSize: self.pageSize,
+            contract: '',
+            startTime: '',
+            endTime: '',
+          };
+          api.get('/contract/page', params).then((res) => {
+            self.total = res.content.total;
+            self.pageNo = res.content.pageNum;
+            cbWaterfall(null, res.content.list);
+          });
+        },
+        (list, cbWaterfall) => {
+          async.map(list, (item, cbMap) => {
+            async.parallel({
+              total: (cbParallel) => {
+                const params = {
+                  contractId: item.id,
+                };
+                api.get('/contract-detail/count', params).then((res) => {
+                  cbParallel(null, res.content.total);
+                });
+              },
+              complete: (cbParallel) => {
+                const params = {
+                  contractId: item.id,
+                };
+                api.get('/contract-detail/complete', params).then((res) => {
+                  cbParallel(null, res.content.total);
+                });
+              },
+              completeLastWeek: (cbParallel) => {
+                const params = {
+                  contractId: item.id,
+                  before: 7,
+                };
+                api.get('/contract-detail/complete/before', params).then((res) => {
+                  cbParallel(null, res.content.total);
+                });
+              },
+            }, (err, results) => {
+              if (err) {
+                cbMap(null);
+              } else {
+                const itemTemp = item;
+                const rate = '%';
+                itemTemp.contractTotal = results.total;
+                itemTemp.contractComplete = results.complete;
+                itemTemp.contractUnComplete = results.total - results.complete;
+                itemTemp.contractCompleteRate = (results.complete * 100) / results.total;
+                itemTemp.contractCompleteRate += `${rate}`;
+                itemTemp.contractCompleteLastWeek = results.completeLastWeek;
+                itemTemp.crtTime = utils.dateFormat(itemTemp.crtTime, 'yyyy-MM-dd hh:mm:ss');
+                cbMap(null, itemTemp);
+              }
+            });
+          }, (err, results) => {
+            if (err) {
+              cbWaterfall(err);
+            } else {
+              cbWaterfall(null, results);
+            }
+          });
+        },
+      ], (err, result) => {
+        if (!err) {
+          self.tableData = result;
+        }
       });
     },
   },
