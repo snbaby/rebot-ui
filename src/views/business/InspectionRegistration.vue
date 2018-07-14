@@ -25,13 +25,13 @@
                 </el-table-column>
                 <el-table-column property="contractTotal" label="合同总数">
                 </el-table-column>
-                <el-table-column property="contractCompleteRate" label="完成率">
+                <el-table-column property="contractConfirmRate" label="完成率">
                 </el-table-column>
-                <el-table-column property="contractComplete" label="已完成">
+                <el-table-column property="contractConfirm" label="已完成">
                 </el-table-column>
-                <el-table-column property="contractUnComplete" label="剩余">
+                <el-table-column property="contractUnConfirm" label="剩余">
                 </el-table-column>
-                <el-table-column property="contractCompleteLastWeek" label="近一周验机数量">
+                <el-table-column property="contractConfirmLastWeek" label="近一周验机数量">
                 </el-table-column>
                 <el-table-column property="crtTime" label="添加时间">
                 </el-table-column>
@@ -147,24 +147,25 @@ export default {
                 const params = {
                   contractId: item.id,
                 };
-                api.get('/contract-detail/count', params).then((res) => {
+                api.post('/contract-detail/count', params).then((res) => {
                   cbParallel(null, res.content.total);
                 });
               },
-              complete: (cbParallel) => {
+              confirm: (cbParallel) => {
                 const params = {
                   contractId: item.id,
+                  status: 'YES',
                 };
-                api.get('/contract-detail/complete', params).then((res) => {
+                api.post('/contract-detail/count', params).then((res) => {
                   cbParallel(null, res.content.total);
                 });
               },
-              completeLastWeek: (cbParallel) => {
+              confirmLastWeek: (cbParallel) => {
                 const params = {
                   contractId: item.id,
-                  before: 7,
+                  status: 'YES',
                 };
-                api.get('/contract-detail/complete/before', params).then((res) => {
+                api.post('/contract-detail/count/7', params).then((res) => {
                   cbParallel(null, res.content.total);
                 });
               },
@@ -175,11 +176,11 @@ export default {
                 const itemTemp = item;
                 const rate = '%';
                 itemTemp.contractTotal = results.total;
-                itemTemp.contractComplete = results.complete;
-                itemTemp.contractUnComplete = results.total - results.complete;
-                itemTemp.contractCompleteRate = (results.complete * 100) / results.total;
-                itemTemp.contractCompleteRate += `${rate}`;
-                itemTemp.contractCompleteLastWeek = results.completeLastWeek;
+                itemTemp.contractConfirm = results.confirm;
+                itemTemp.contractUnConfirm = results.total - results.confirm;
+                itemTemp.contractConfirmRate = (results.confirm * 100) / results.total;
+                itemTemp.contractConfirmRate += `${rate}`;
+                itemTemp.contractConfirmLastWeek = results.confirmLastWeek;
                 itemTemp.crtTime = utils.dateFormat(itemTemp.crtTime, 'yyyy-MM-dd hh:mm:ss');
                 cbMap(null, itemTemp);
               }
