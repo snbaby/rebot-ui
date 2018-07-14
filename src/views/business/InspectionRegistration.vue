@@ -65,9 +65,6 @@
 </template>
 
 <script>
-import vTotalImg from '../../components/framework/TotalImg';
-import vTotalRate from '../../components/framework/TotalRate';
-import vDivide from '../../components/framework/Divide';
 import api from './../../axios/api';
 import utils from './../../util/utils';
 
@@ -81,11 +78,6 @@ export default {
       pageSize: 10,
       total: 0,
     };
-  },
-  components: {
-    vTotalImg,
-    vTotalRate,
-    vDivide,
   },
   created() {
     this.queryPage();
@@ -111,7 +103,7 @@ export default {
     },
     statusChange(id, status) {
       const self = this;
-      api.put(`/contract/${id}/${status}`, {}).then(() => {
+      api.put(`/api/contract/${id}/${status}`, {}).then(() => {
         self.queryPage();
         self.$notify.success({
           title: '成功',
@@ -134,7 +126,7 @@ export default {
             startTime: '',
             endTime: '',
           };
-          api.get('/contract/page', params).then((res) => {
+          api.get('/api/contract/page', params).then((res) => {
             self.total = res.content.total;
             self.pageNo = res.content.pageNum;
             cbWaterfall(null, res.content.list);
@@ -147,7 +139,7 @@ export default {
                 const params = {
                   contractId: item.id,
                 };
-                api.post('/contract-detail/count', params).then((res) => {
+                api.post('/api/contract-detail/count', params).then((res) => {
                   cbParallel(null, res.content.total);
                 });
               },
@@ -156,7 +148,7 @@ export default {
                   contractId: item.id,
                   status: 'YES',
                 };
-                api.post('/contract-detail/count', params).then((res) => {
+                api.post('/api/contract-detail/count', params).then((res) => {
                   cbParallel(null, res.content.total);
                 });
               },
@@ -165,7 +157,7 @@ export default {
                   contractId: item.id,
                   status: 'YES',
                 };
-                api.post('/contract-detail/count/7', params).then((res) => {
+                api.post('/api/contract-detail/count/7', params).then((res) => {
                   cbParallel(null, res.content.total);
                 });
               },

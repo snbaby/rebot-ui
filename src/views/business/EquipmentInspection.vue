@@ -41,13 +41,13 @@
             <el-col>
               <el-table :data="tableData">
                 <el-table-column type="index" label="序号"></el-table-column>
-                <el-table-column property="equipmentNumber" label="设备统一编号"></el-table-column>
-                <el-table-column property="equipmentModel" label="设备型号"></el-table-column>
-                <el-table-column property="computerName" label="计算机名"></el-table-column>
-                <el-table-column property="equipmentSequenceNumber" label="设备序列号"></el-table-column>
-                <el-table-column property="operatingSystem" label="操作系统"></el-table-column>
+                <el-table-column property="eqNo" label="设备统一编号"></el-table-column>
+                <el-table-column property="eqType" label="设备型号"></el-table-column>
+                <el-table-column property="eqNo" label="计算机名"></el-table-column>
+                <el-table-column property="biosSn" label="设备序列号"></el-table-column>
+                <el-table-column property="opSystem" label="操作系统"></el-table-column>
                 <el-table-column property="cpuModel" label="CPU型号"></el-table-column>
-                <el-table-column property="systemInstallationTime" label="操作系统安装时间">
+                <el-table-column property="opInstallDate" label="操作系统安装时间">
                 </el-table-column>
                 <el-table-column property="diskInterface" label="硬盘接口类型"></el-table-column>
                 <el-table-column property="diskSerialNumber" label="硬盘序列号"></el-table-column>
@@ -57,7 +57,7 @@
                 <el-table-column property="memoryCapacity" label="内存容量"></el-table-column>
                 <el-table-column property="graphicsModel" label="显卡型号"></el-table-column>
                 <el-table-column property="diskShellNumber" label="硬盘外壳号"></el-table-column>
-                <el-table-column property="status" label="状态"></el-table-column>
+                <el-table-column property="contractDetailStatus" label="状态"></el-table-column>
                 <el-table-column label="操作">
                   <template slot-scope="scope">
                     <el-button type="text">删除</el-button>
@@ -69,8 +69,9 @@
           <el-row>
             <el-col>
               <el-pagination
+                @current-change="handleCurrentChange"
                 layout="total, prev, pager, next"
-                :total="10">
+                :total="total">
               </el-pagination>
             </el-col>
           </el-row>
@@ -85,169 +86,43 @@ import vTotalImg from '../../components/framework/TotalImg';
 import vTotalNumber from '../../components/framework/TotalNumber';
 import vDivide from '../../components/framework/Divide';
 
+import api from './../../axios/api';
+
 export default {
   data() {
     return {
-      tableData: [{
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        computerName: 'JPC-004',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        cpuModel: 'AMD',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-        status: '0',
-      }, {
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        computerName: 'JPC-004',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        cpuModel: 'AMD',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-        status: '0',
-      }, {
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        computerName: 'JPC-004',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        cpuModel: 'AMD',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-        status: '0',
-      }, {
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        computerName: 'JPC-004',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        cpuModel: 'AMD',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-        status: '0',
-      }, {
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        computerName: 'JPC-004',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        cpuModel: 'AMD',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-        status: '0',
-      }, {
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        computerName: 'JPC-004',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        cpuModel: 'AMD',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-        status: '0',
-      }, {
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        computerName: 'JPC-004',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        cpuModel: 'AMD',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-        status: '0',
-      }, {
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        computerName: 'JPC-004',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        cpuModel: 'AMD',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-        status: '0',
-      }, {
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        computerName: 'JPC-004',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        cpuModel: 'AMD',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-        status: '0',
-      }],
+      tableData: [],
+      pageNo: 1,
+      pageSize: 10,
+      total: 0,
     };
   },
   components: {
     vTotalImg,
     vTotalNumber,
     vDivide,
+  },
+  created() {
+    this.queryPage();
+  },
+  methods: {
+    handleCurrentChange(val) {
+      this.pageNo = val;
+      this.queryPage();
+    },
+    queryPage() {
+      const self = this;
+      const params = {
+        pageNo: self.pageNo,
+        pageSize: self.pageSize,
+        contractStatus: 'YES',
+      };
+      api.get('/api/inspection/page', params).then((res) => {
+        self.total = res.content.total;
+        self.pageNo = res.content.pageNum;
+        self.tableData = res.content.list;
+      });
+    },
   },
 };
 </script>

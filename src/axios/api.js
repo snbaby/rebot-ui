@@ -57,11 +57,9 @@ export default {
     });
   },
   // post请求
-  post(url, param) {
+  post(url, data) {
     return new Promise((resolve, reject) => {
-      axios.post(url, {
-        data: param,
-      }).then((res) => {
+      axios.post(url, data).then((res) => {
         resolve(res);
       }).catch((error) => {
         reject(error);
