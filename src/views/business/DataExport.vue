@@ -18,7 +18,11 @@
                          src="../../../static/default/images/u003.png" />
                   </template>
                 </el-table-column>
-                <el-table-column property="inspectionTime" label="验机时间"></el-table-column>
+                <el-table-column  label="验机时间">
+                  <template slot-scope="scope">
+                    {{formate(scope.row.contractDetailUptTime)}}
+                  </template>
+                </el-table-column>
                 <el-table-column property="contract" label="合同编号"></el-table-column>
                 <el-table-column property="eqNo" label="设备统一编号"></el-table-column>
                 <el-table-column property="eqType" label="设备型号"></el-table-column>
@@ -125,6 +129,8 @@
 <script>
 import api from './../../axios/api';
 
+import utils from './../../util/utils';
+
 const async = require('async');
 
 export default {
@@ -170,6 +176,9 @@ export default {
     this.queryPage();
   },
   methods: {
+    formate(crtTime){
+      return utils.dateFormat(crtTime, 'yyyy-MM-dd hh:mm:ss')
+    },
     handleCurrentChange(val) {
       this.pageNo = val;
       this.queryPage();
