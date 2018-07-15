@@ -137,46 +137,10 @@ export default {
         visible: false,
         computerId: '',
         eqNo: '',
-        disks: [{
-          id: '1',
-          diskSn: 'diskSn',
-          diskInterfaceType: 'diskInterfaceType',
-          diskCapacity: 'diskCapacity',
-          diskShellSn: 'diskShellSn',
-        }, {
-          id: '2',
-          diskSn: 'diskSn',
-          diskInterfaceType: 'diskInterfaceType',
-          diskCapacity: 'diskCapacity',
-          diskShellSn: 'diskShellSn',
-        }],
-        mems: [{
-          id: '1',
-          memSn: 'memSn',
-          memType: 'memType',
-          memCapacity: 'memCapacity',
-        }, {
-          id: '1',
-          memSn: 'memSn',
-          memType: 'memType',
-          memCapacity: 'memCapacity',
-        }],
-        videos: [{
-          id: '1',
-          videoSn: 'videoSn',
-          videoType: 'videoType',
-        }, {
-          id: '1',
-          videoSn: 'videoSn',
-          videoType: 'videoType',
-        }],
-        macs: [{
-          id: '1',
-          macAddress: 'macAddress',
-        }, {
-          id: '1',
-          macAddress: 'macAddress',
-        }],
+        disks: [],
+        mems: [],
+        videos: [],
+        macs: [],
       },
     };
   },
