@@ -46,7 +46,7 @@
                 <el-table-column property="eqNo" label="计算机名"></el-table-column>
                 <el-table-column property="biosSn" label="设备序列号"></el-table-column>
                 <el-table-column property="opSystem" label="操作系统"></el-table-column>
-                <el-table-column property="cpuModel" label="CPU型号"></el-table-column>
+                <el-table-column property="cpu" label="CPU型号"></el-table-column>
                 <el-table-column property="opInstallDate" label="操作系统安装时间">
                 </el-table-column>
                 <el-table-column label="操作">
