@@ -337,3 +337,7 @@ body,
   float: right;
   padding: 3px 0
 }
+
+.el-card__header {
+  padding: 5px 20px;
+}
