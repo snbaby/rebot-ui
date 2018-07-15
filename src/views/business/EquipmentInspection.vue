@@ -1,41 +1,10 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="8">
-        <v-total-img title="当前待验机总数" number="245"></v-total-img>
-      </el-col>
-      <el-col :span="4" >
-        <v-total-number :bgColor="{ 'background-color': '#000000' }"
-                      title="已验" number="9">
-        </v-total-number>
-      </el-col>
-      <el-col :span="4" >
-        <v-total-number :bgColor="{ 'background-color': 'rgba(45, 182, 244, 1)' }"
-                        title="在验" number="1">
-        </v-total-number>
-      </el-col>
-      <el-col :span="4" >
-        <v-total-number :bgColor="{ 'background-color': '#000000' }"
-                        title="已确认" number="6">
-        </v-total-number>
-      </el-col>
-      <el-col :span="4" >
-        <v-total-number :bgColor="{ 'background-color': 'rgba(45, 182, 244, 1)' }"
-                        title="待确认" number="3">
-        </v-total-number>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col>
-        <v-divide></v-divide>
-      </el-col>
-    </el-row>
-    <el-row>
       <el-col>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>设备验机</span>
-            <el-button class="btn_template_create" type="text">开始验机</el-button>
           </div>
           <el-row>
             <el-col>
@@ -51,11 +20,14 @@
                 </el-table-column>
                 <el-table-column label="操作">
                   <template slot-scope="scope">
-                    <el-button type="text"
+                    <el-button type="text" v-if="scope.row.computerId!=''"
                                @click="openDetailDialog(scope.row.computerId, scope.row.eqNo)">
                       详情
                     </el-button>
-                    <el-button type="text">确认</el-button>
+                    <el-button type="text" v-if="scope.row.computerId!=''"
+                               @click="confirm(scope.row.contractDetailId, scope.row.eqNo)">
+                      验机
+                    </el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -227,11 +199,33 @@ export default {
         pageNo: self.pageNo,
         pageSize: self.pageSize,
         contractStatus: 'YES',
+        contractDetailStatus: 'NO',
       };
       api.get('/api/inspection/page', params).then((res) => {
         self.total = res.content.total;
         self.pageNo = res.content.pageNum;
         self.tableData = res.content.list;
+      });
+    },
+    confirm(contractDetailId, eqNo) {
+      const self = this;
+      self.$confirm(`资产${eqNo}确认后将无法进行修改, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        const params = {
+          id: contractDetailId,
+          status: 'YES',
+        };
+        api.post('/api/contract-detail/change', params).then(() => {
+          self.$notify.success({
+            title: '成功',
+            message: `资产${eqNo}确认成功`,
+          });
+          self.handleCurrentChange(1);
+        });
+      }).catch(() => {
       });
     },
     openDetailDialog(computerId, eqNo) {
