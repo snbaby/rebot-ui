@@ -138,25 +138,7 @@ export default {
     return {
       // xAxisDataYear: ['1', '2', '3', '4', '5', '6', '7'],
       // seriesDataYear: [820, 932, 901, 934, 1290, 1330, 1320],
-      tableData: [{
-        inspectionTime: (new Date()).toLocaleDateString(),
-        equipmentNumber: 'JPC-001',
-        equipmentModel: 'Dell-R1301',
-        equipmentName: 'JPC-001',
-        contractNumber: '00123',
-        contractName: '#3项目',
-        equipmentSequenceNumber: 'SN21.46363L',
-        operatingSystem: 'Windows 7',
-        systemInstallationTime: (new Date()).toLocaleDateString(),
-        diskInterface: 'USB3.0',
-        diskSerialNumber: 'SN21.4263363L',
-        diskCapacity: '50G',
-        macAddress: '00-01-6C-06-A6-29',
-        memoryType: 'DDR3',
-        memoryCapacity: '8G',
-        graphicsModel: 'NVIDIA',
-        diskShellNumber: '1546784523784',
-      }],
+      tableData: [],
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -176,8 +158,8 @@ export default {
     this.queryPage();
   },
   methods: {
-    formate(crtTime){
-      return utils.dateFormat(crtTime, 'yyyy-MM-dd hh:mm:ss')
+    formate(crtTime) {
+      return utils.dateFormat(crtTime, 'yyyy-MM-dd hh:mm:ss');
     },
     handleCurrentChange(val) {
       this.pageNo = val;
