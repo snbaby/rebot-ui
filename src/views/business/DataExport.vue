@@ -1,6 +1,23 @@
 <template>
   <div>
     <el-row>
+      <el-form :inline="true" class="demo-form-inline">
+        <el-form-item label="合同编号">
+          <el-select v-model="search.contractId" filterable placeholder="请选择">
+            <el-option
+              v-for="item in contractOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="query()">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </el-row>
+    <el-row>
       <el-col>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -128,7 +145,6 @@
 
 <script>
 import api from './../../axios/api';
-
 import utils from './../../util/utils';
 
 const async = require('async');
@@ -136,8 +152,6 @@ const async = require('async');
 export default {
   data() {
     return {
-      // xAxisDataYear: ['1', '2', '3', '4', '5', '6', '7'],
-      // seriesDataYear: [820, 932, 901, 934, 1290, 1330, 1320],
       tableData: [],
       pageNo: 1,
       pageSize: 10,
@@ -152,18 +166,45 @@ export default {
         videos: [],
         macs: [],
       },
+      search: {
+        contractId: '',
+      },
+      contractOptions: [],
     };
   },
   created() {
-    this.queryPage();
+    this.queryContract();
   },
   methods: {
+    query() {
+      this.pageNo = 1;
+      this.queryPage();
+    },
     formate(crtTime) {
       return utils.dateFormat(crtTime, 'yyyy-MM-dd hh:mm:ss');
     },
     handleCurrentChange(val) {
       this.pageNo = val;
       this.queryPage();
+    },
+    queryContract() {
+      const self = this;
+      self.contractOptions = [];
+      self.search.contractId = '';
+      const params = {
+      };
+      api.get('/api/contract/list', params).then((res) => {
+        res.content.forEach((contract) => {
+          self.contractOptions.push({
+            value: contract.id,
+            label: contract.contract,
+          });
+          if (contract.status === 'YES') {
+            self.search.contractId = contract.id;
+          }
+        });
+        self.queryPage();
+      });
     },
     queryPage() {
       const self = this;
@@ -172,6 +213,9 @@ export default {
         pageSize: self.pageSize,
         contractDetailStatus: 'YES',
       };
+      if (self.search.contractId !== '') {
+        params.contractId = self.search.contractId;
+      }
       api.get('/api/inspection/page', params).then((res) => {
         self.total = res.content.total;
         self.pageNo = res.content.pageNum;
