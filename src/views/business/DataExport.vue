@@ -12,6 +12,18 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="日期">
+          <el-date-picker
+            v-model="search.dateRange"
+            type="datetimerange"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            align="right">
+          </el-date-picker>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="query()">查询</el-button>
         </el-form-item>
@@ -22,8 +34,9 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>数据导出</span>
-            <el-button class="btn_inspection_batch_export" type="text">批量导出</el-button>
-            <el-button class="btn_inspection_report_export" type="text">导出验机报告</el-button>
+            <el-button :disabled="tableData.length==0" class="btn_inspection_report_export" @click="exportFile" type="text">
+              导出验机报告
+            </el-button>
           </div>
           <el-row>
             <el-col>
@@ -168,14 +181,54 @@ export default {
       },
       search: {
         contractId: '',
+        dateRange: [],
       },
       contractOptions: [],
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - (3600 * 1000 * 24 * 7));
+            picker.$emit('pick', [start, end]);
+          },
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - (3600 * 1000 * 24 * 30));
+            picker.$emit('pick', [start, end]);
+          },
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - (3600 * 1000 * 24 * 90));
+            picker.$emit('pick', [start, end]);
+          },
+        }],
+      },
     };
   },
   created() {
     this.queryContract();
   },
   methods: {
+    exportFile() {
+      const self = this;
+      let params = '?contractDetailStatus=YES';
+      if (self.search.contractId !== '') {
+        params += `&contractId=${self.search.contractId}`;
+      }
+      if (self.search.dateRange && self.search.dateRange.length > 0) {
+        params += `&startTime=${self.search.dateRange[0]}`;
+        params += `&endTime=${self.search.dateRange[1]}`;
+      }
+      window.open(`http://soc.seadun.com:8765/api/file${params}`);
+    },
     query() {
       this.pageNo = 1;
       this.queryPage();
@@ -215,6 +268,10 @@ export default {
       };
       if (self.search.contractId !== '') {
         params.contractId = self.search.contractId;
+      }
+      if (self.search.dateRange && self.search.dateRange.length > 0) {
+        params.startTime = self.search.dateRange[0];
+        params.endTime = self.search.dateRange[1];
       }
       api.get('/api/inspection/page', params).then((res) => {
         self.total = res.content.total;
