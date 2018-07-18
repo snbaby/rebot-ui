@@ -34,7 +34,8 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>数据导出</span>
-            <el-button :disabled="tableData.length==0" class="btn_inspection_report_export" @click="exportFile" type="text">
+            <el-button :disabled="tableData.length==0" class="btn_inspection_report_export"
+                       @click="exportFile" type="text">
               导出验机报告
             </el-button>
           </div>
