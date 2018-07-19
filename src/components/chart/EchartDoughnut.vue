@@ -87,7 +87,7 @@ export default {
       this.chart = echarts.init(this.$refs[this.doughnutRef]);
       const option = {
         title: {
-          text: '验机情况',
+          text: '本月合同验机情况',
           x: 'left',
         },
         tooltip: {

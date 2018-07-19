@@ -53,21 +53,21 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>硬盘</span>
-          <el-button style="float: right; padding: 3px 0" type="text">保存</el-button>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="save">保存</el-button>
         </div>
         <el-form :inline="true" class="demo-form-inline" v-for="disk in detailDialog.disks"
                  :key="disk.id">
-          <el-form-item label="序列号">
-            <el-input v-model="disk.diskSn" placeholder="序列号"></el-input>
+          <el-form-item label="序列号:">
+            {{disk.diskSn}}
           </el-form-item>
-          <el-form-item label="接口">
-            <el-input v-model="disk.diskSn" placeholder="接口"></el-input>
+          <el-form-item label="接口:">
+            {{disk.diskInterfaceType}}
           </el-form-item>
-          <el-form-item label="容量">
-            <el-input v-model="disk.diskSn" placeholder="容量"></el-input>
+          <el-form-item label="容量:">
+            {{disk.diskCapacity}}
           </el-form-item>
-          <el-form-item label="外壳号">
-            <el-input v-model="disk.diskSn" placeholder="外壳号"></el-input>
+          <el-form-item label="外壳号:">
+            <el-input v-model="disk.diskShellSn" placeholder="外壳号"></el-input>
           </el-form-item>
         </el-form>
       </el-card>
@@ -192,15 +192,26 @@ export default {
       }).catch(() => {
       });
     },
+    save() {
+      const params = {
+        disks: this.detailDialog.disks,
+      };
+      api.put('/api/disk/update', params).then(() => {
+      });
+    },
     openDetailDialog(computerId, eqNo) {
       const self = this;
       this.detailDialog.visible = true;
       this.detailDialog.computerId = computerId;
       this.detailDialog.eqNo = eqNo;
+      this.detailDialog.disks = [];
+      this.detailDialog.mems = [];
+      this.detailDialog.videos = [];
+      this.detailDialog.macs = [];
       async.parallel({
         disks: (cb) => {
           const params = {
-            computerId: self.computerId,
+            computerId: self.detailDialog.computerId,
           };
           api.get('/api/disk/list', params).then((res) => {
             cb(null, res);
@@ -208,7 +219,7 @@ export default {
         },
         mems: (cb) => {
           const params = {
-            computerId: self.computerId,
+            computerId: self.detailDialog.computerId,
           };
           api.get('/api/mem/list', params).then((res) => {
             cb(null, res);
@@ -216,7 +227,7 @@ export default {
         },
         videos: (cb) => {
           const params = {
-            computerId: self.computerId,
+            computerId: self.detailDialog.computerId,
           };
           api.get('/api/video/list', params).then((res) => {
             cb(null, res);
@@ -224,7 +235,7 @@ export default {
         },
         macs: (cb) => {
           const params = {
-            computerId: self.computerId,
+            computerId: self.detailDialog.computerId,
           };
           api.get('/api/net/list', params).then((res) => {
             cb(null, res);

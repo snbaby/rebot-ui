@@ -7,6 +7,7 @@ import {
 } from './axiosInitHelper';
 
 axios.defaults.baseURL = 'http://soc.seadun.com:8765';
+axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.timeout = 60000;
 
@@ -30,7 +31,18 @@ axios.interceptors.response.use(
     const resp = error.response;
     let message = '';
     if (resp && Object.prototype.hasOwnProperty.call(resp, 'data')) {
-      message = error.response.data.description;
+      if (resp.data.code === 'USER_NOT_LOGIN_EXCEPTION') {
+        ElementUI.Message.error('请重新登录');
+        tryHideFullScreenLoading();
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+        return Promise.reject(error);
+      }
+    }
+
+    if (resp && Object.prototype.hasOwnProperty.call(resp, 'data')) {
+      message = resp.data.description;
     } else {
       message = '服务器或网络异常，请稍后重试！';
     }
@@ -67,11 +79,9 @@ export default {
     });
   },
   // put请求
-  put(url, param) {
+  put(url, data) {
     return new Promise((resolve, reject) => {
-      axios.put(url, {
-        data: param,
-      }).then((res) => {
+      axios.put(url, data).then((res) => {
         resolve(res);
       }).catch((error) => {
         reject(error);

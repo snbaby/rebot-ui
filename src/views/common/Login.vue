@@ -26,6 +26,8 @@
 
 <script>
 
+import api from './../../axios/api';
+
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -65,8 +67,19 @@ export default {
   },
   methods: {
     handleLogin() {
+      const self = this;
       localStorage.setItem('ms_username', this.loginForm.username);
-      this.$router.push('/rebot');
+      this.$refs.loginForm.validate((valid) => {
+        if (valid) {
+          const params = {
+            userName: self.loginForm.username,
+            userPassword: self.loginForm.password,
+          };
+          api.post('/api/auth/login', params).then(() => {
+            self.$router.push('/rebot');
+          });
+        }
+      });
     },
   },
 };

@@ -8,15 +8,6 @@
         </i>
         <span>导综合看板</span>
       </el-menu-item>
-      <el-submenu index="/rebot/system">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span>系统配置管理</span>
-        </template>
-        <el-menu-item index="/rebot/system/template_manager">
-          <span>操作系统模板管理</span>
-        </el-menu-item>
-      </el-submenu>
       <el-submenu index="/rebot/intelligent">
         <template slot="title">
           <i class="el-icon-menu"></i>

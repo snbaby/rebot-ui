@@ -12,6 +12,9 @@
   </div>
 </template>
 <script>
+
+import api from './../../axios/api';
+
 export default {
   data() {
     return {
@@ -26,7 +29,10 @@ export default {
   },
   methods: {
     handleCommand() {
-
+      const self = this;
+      api.get('/api/auth/logout', {}).then(() => {
+        self.$router.push('/login');
+      });
     },
   },
 };

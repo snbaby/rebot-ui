@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-row>
       <el-col>
         <el-card class="box-card">
@@ -12,6 +12,7 @@
               action="http://soc.seadun.com:8765/api/file"
               :on-success="handleAvatarSuccess"
               :on-error="handleAvatarError"
+              :before-upload="beforeAvatarUpload"
               >
               <el-button class="btn_template_create" type="text">入库</el-button>
             </el-upload>
@@ -77,6 +78,7 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
+      loading: false,
     };
   },
   created() {
@@ -88,6 +90,11 @@ export default {
         title: '成功',
         message: `上传文件 ${file.name} 成功`,
       });
+      this.loading = false;
+    },
+    beforeAvatarUpload() {
+      this.loading = true;
+      return true;
     },
     handleAvatarError(err, file) {
       let errMessage = '';
@@ -100,6 +107,8 @@ export default {
         title: '错误',
         message: `上传文件 ${file.name} 失败，${errMessage}`,
       });
+
+      this.loading = false;
     },
     statusChange(id, status) {
       const self = this;
