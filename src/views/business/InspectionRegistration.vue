@@ -91,6 +91,7 @@ export default {
         message: `上传文件 ${file.name} 成功`,
       });
       this.loading = false;
+      this.queryPage();
     },
     beforeAvatarUpload() {
       this.loading = true;

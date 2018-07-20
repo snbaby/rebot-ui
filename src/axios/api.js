@@ -35,7 +35,7 @@ axios.interceptors.response.use(
         ElementUI.Message.error('请重新登录');
         tryHideFullScreenLoading();
         setTimeout(() => {
-          window.location.href = '/login';
+          window.location.href = '/';
         }, 2000);
         return Promise.reject(error);
       }
