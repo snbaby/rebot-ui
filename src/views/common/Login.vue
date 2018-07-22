@@ -1,8 +1,5 @@
 <template>
   <div class="login-wrap">
-    <div class="head-log">
-      <img class="company-log" src="../../../static/default/images/company-log.png" alt="公司log" />
-    </div>
     <div class="ms-title">计算机设备智能验收系统</div>
     <div class="ms-login">
       <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="0px">
