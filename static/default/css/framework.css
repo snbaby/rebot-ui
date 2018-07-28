@@ -126,7 +126,17 @@ body,
 }
 
 .btn_template_create {
-  padding: 3px 0
+  padding: 3px 5px 3px 5px;
+}
+
+.btn_template_auto {
+  float: right;
+  padding: 3px 10px 3px 10px;
+}
+
+.btn_template_manual {
+  float: right;
+  padding: 3px 10px 3px 10px;
 }
 
 .upload {

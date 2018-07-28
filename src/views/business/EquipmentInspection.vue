@@ -77,9 +77,6 @@
         </div>
         <el-form :inline="true" class="demo-form-inline" v-for="mem in detailDialog.mems"
                  :key="mem.id">
-          <el-form-item label="序列号:">
-            {{mem.memSn}}
-          </el-form-item>
           <el-form-item label="接口:">
             {{mem.memType}}
           </el-form-item>
@@ -94,9 +91,6 @@
         </div>
         <el-form :inline="true" class="demo-form-inline" v-for="video in detailDialog.videos"
                  :key="video.id">
-          <el-form-item label="序列号:">
-            {{video.videoSn}}
-          </el-form-item>
           <el-form-item label="型号:">
             {{video.videoType}}
           </el-form-item>

@@ -46,7 +46,7 @@
                 <el-table-column label="二维图形">
                   <template slot-scope="scope">
                     <img style="width: 30px;height: 30px"
-                         src="../../../static/default/images/u003.png" />
+                         src="../../../static/default/images/u003.png" @click="openImgDialog(scope.row)" />
                   </template>
                 </el-table-column>
                 <el-table-column  label="验机时间">
@@ -117,9 +117,6 @@
         </div>
         <el-form :inline="true" class="demo-form-inline" v-for="mem in detailDialog.mems"
                  :key="mem.id">
-          <el-form-item label="序列号:">
-            {{mem.memSn}}
-          </el-form-item>
           <el-form-item label="接口:">
             {{mem.memType}}
           </el-form-item>
@@ -134,9 +131,6 @@
         </div>
         <el-form :inline="true" class="demo-form-inline" v-for="video in detailDialog.videos"
                  :key="video.id">
-          <el-form-item label="序列号:">
-            {{video.videoSn}}
-          </el-form-item>
           <el-form-item label="型号:">
             {{video.videoType}}
           </el-form-item>
@@ -218,6 +212,9 @@ export default {
     this.queryContract();
   },
   methods: {
+    openImgDialog() {
+
+    },
     exportFile() {
       const self = this;
       let params = '?contractDetailStatus=YES';

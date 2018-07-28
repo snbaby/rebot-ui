@@ -5,6 +5,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>验机登记</span>
+            <el-button class="btn_template_manual" type="text" @click="openDialog">手动入库</el-button>
             <el-upload
               class="upload"
               show-file-list
@@ -14,8 +15,30 @@
               :on-error="handleAvatarError"
               :before-upload="beforeAvatarUpload"
               >
-              <el-button class="btn_template_create" type="text">入库</el-button>
+              <el-button class="btn_template_auto" type="text">自动入库</el-button>
             </el-upload>
+          </div>
+          <div>
+            <el-dialog title="入库" :visible.sync="dialogFormVisible">
+              <el-form :model="form">
+                <el-form-item label="合同编号" :label-width="formLabelWidth">
+                  <el-input v-model="form.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="设备类型" :label-width="formLabelWidth">
+                  <el-input v-model="form.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="计算机编号" :label-width="formLabelWidth">
+                  <el-input v-model="form.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="数量" :label-width="formLabelWidth">
+                  <el-input v-model="form.name" auto-complete="off"></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+              </div>
+            </el-dialog>
           </div>
           <el-row>
             <el-col>
@@ -79,12 +102,27 @@ export default {
       pageSize: 10,
       total: 0,
       loading: false,
+      dialogFormVisible: false,
+      form: {
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: '',
+      },
+      formLabelWidth: '120px',
     };
   },
   created() {
     this.queryPage();
   },
   methods: {
+    openDialog() {
+      this.dialogFormVisible = true;
+    },
     handleAvatarSuccess(response, file) {
       this.$notify.success({
         title: '成功',
