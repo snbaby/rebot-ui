@@ -46,7 +46,8 @@
                 <el-table-column label="二维图形">
                   <template slot-scope="scope">
                     <img style="width: 30px;height: 30px"
-                         src="../../../static/default/images/u003.png" @click="openImgDialog(scope.row)" />
+                         src="../../../static/default/images/u003.png"
+                         @click="openImgDialog(scope.row)" />
                   </template>
                 </el-table-column>
                 <el-table-column  label="验机时间">
@@ -74,6 +75,18 @@
               </el-table>
             </el-col>
           </el-row>
+          <div>
+            <el-dialog
+              :title="'二维码-'+imgDialog.eqNo"
+              :visible.sync="imgDialog.visible"
+              width="350px"
+              center>
+              <div class="qrcode" id="qrcode" ref="qrcode"></div>
+              <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="closeImgDialog">确 定</el-button>
+              </span>
+            </el-dialog>
+          </div>
           <el-row>
             <el-col>
               <el-pagination
@@ -154,10 +167,13 @@
 <script>
 import api from './../../axios/api';
 import utils from './../../util/utils';
+/* eslint-disable */
+import QRCode from 'qrcodejs2';
 
 const async = require('async');
 
 export default {
+  components: { QRCode },
   data() {
     return {
       tableData: [],
@@ -206,14 +222,26 @@ export default {
           },
         }],
       },
+      imgDialog: {
+        visible: false,
+        eqNo: '',
+      },
     };
   },
   created() {
     this.queryContract();
   },
   methods: {
-    openImgDialog() {
-
+    openImgDialog(row) {
+      this.imgDialog.visible = true;
+      this.imgDialog.eqNo = row.eqNo;
+      this.$nextTick (function () {
+        this.qrcode(row.eqNo);
+      })
+    },
+    closeImgDialog() {
+      this.imgDialog.visible = false;
+      this.imgDialog.eqNo = '';
     },
     exportFile() {
       const self = this;
@@ -335,6 +363,14 @@ export default {
         videos: [],
         macs: [],
       };
+    },
+    qrcode (text) {
+      document.getElementById('qrcode').innerHTML = '';
+      let qrcode = new QRCode('qrcode', {
+        width: 200,  // 设置宽度
+        height: 200, // 设置高度
+        text: text
+      })
     },
   },
 };

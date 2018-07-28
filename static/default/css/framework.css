@@ -139,6 +139,10 @@ body,
   padding: 3px 10px 3px 10px;
 }
 
+.qrcode {
+  padding-left: 50px;
+}
+
 .upload {
   float: right;
 }
