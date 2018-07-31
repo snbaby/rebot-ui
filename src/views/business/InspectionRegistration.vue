@@ -19,24 +19,34 @@
             </el-upload>
           </div>
           <div>
-            <el-dialog title="入库" :visible.sync="dialogFormVisible">
-              <el-form :model="form">
-                <el-form-item label="合同编号" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
+            <el-dialog title="入库" :visible.sync="dialogForm.visible">
+              <el-form :model="dialogForm" :rules="rules" ref="ruleForm">
+                <el-form-item label="合同编号" label-width="120px" prop="contract">
+                  <el-input v-model="dialogForm.contract" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="设备类型" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
+                <el-form-item label="设备类型" label-width="120px" prop="eqType">
+                  <el-input v-model="dialogForm.eqType" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="计算机编号" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="数量" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
+                <el-form-item label="计算机编号" label-width="120px" prop="eqNos">
+                  <el-select
+                    style="width: 100%"
+                    v-model="dialogForm.eqNos"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option>
+                    <el-option
+                      v-for="item in dialogForm.options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button type="primary" @click="saveDialog">确 定</el-button>
               </div>
             </el-dialog>
           </div>
@@ -102,26 +112,48 @@ export default {
       pageSize: 10,
       total: 0,
       loading: false,
-      dialogFormVisible: false,
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
+      dialogForm: {
+        visible: false,
+        contract: '',
+        eqType: '',
+        eqNos: [],
+        options: [],
       },
-      formLabelWidth: '120px',
+      rules: {
+        contract: [
+          { required: true, message: '请输入合同编号', trigger: 'blur' },
+          { max: 45, message: '长度在 1 到 45 个字符', trigger: 'blur' },
+        ],
+        eqType: [
+          { required: true, message: '请输入计算机类型', trigger: 'blur' },
+          { max: 45, message: '长度在 1 到 45 个字符', trigger: 'blur' },
+        ],
+        eqNos: [
+          { type: 'array', required: true, message: '请输入资产编号', trigger: 'blur' },
+        ],
+      },
     };
   },
   created() {
     this.queryPage();
   },
   methods: {
+    saveDialog() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          console.log('error submit!!');
+        }
+        return false;
+      });
+    },
     openDialog() {
-      this.dialogFormVisible = true;
+      this.dialogForm.visible = true;
+      this.dialogForm.contract = '';
+      this.dialogForm.eqType = '';
+      this.dialogForm.eqNos = [];
+      this.dialogForm.options = [];
     },
     handleAvatarSuccess(response, file) {
       this.$notify.success({
