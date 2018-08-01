@@ -45,7 +45,7 @@
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button @click="dialogForm.visible = false">取 消</el-button>
                 <el-button type="primary" @click="saveDialog">确 定</el-button>
               </div>
             </el-dialog>
@@ -140,12 +140,24 @@ export default {
   methods: {
     saveDialog() {
       this.$refs.ruleForm.validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
+        if (!valid) {
+          return false;
         }
-        return false;
+        const self = this;
+        const params = {
+          contract: self.dialogForm.contract,
+          eqType: self.dialogForm.eqType,
+          eqNos: self.dialogForm.eqNos,
+        };
+        api.post('/api/inspection/import', params).then(() => {
+          self.queryPage();
+          self.$notify.success({
+            title: '成功',
+            message: '手动导入合同成功',
+          });
+          self.dialogForm.visible = false;
+        });
+        return true;
       });
     },
     openDialog() {

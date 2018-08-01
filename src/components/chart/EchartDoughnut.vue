@@ -67,13 +67,17 @@ export default {
       },
     },
   },
+  watch: {
+    'doughnutData.data': (val) => {
+      if (val && val.length > 0) {
+        this.initChart();
+      }
+    },
+  },
   data() {
     return {
       chart: null,
     };
-  },
-  mounted() {
-    this.initChart();
   },
   beforeDestroy() {
     if (!this.chart) {

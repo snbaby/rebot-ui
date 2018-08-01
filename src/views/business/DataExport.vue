@@ -34,7 +34,8 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>数据导出</span>
-            <el-button :disabled="tableData.length==0" class="btn_inspection_report_export"
+            <el-button :disabled="tableData.length==0 || search.contractId == ''"
+                       class="btn_inspection_report_export"
                        @click="exportFile" type="text">
               导出验机报告
             </el-button>
@@ -61,6 +62,7 @@
                 <el-table-column property="eqNo" label="计算机名"></el-table-column>
                 <el-table-column property="biosSn" label="设备序列号"></el-table-column>
                 <el-table-column property="opSystem" label="操作系统"></el-table-column>
+                <el-table-column property="version" label="系统版本号"></el-table-column>
                 <el-table-column property="cpu" label="CPU型号"></el-table-column>
                 <el-table-column property="opInstallDate" label="操作系统安装时间">
                 </el-table-column>
@@ -77,9 +79,9 @@
           </el-row>
           <div>
             <el-dialog
-              :title="'二维码-'+imgDialog.eqNo"
+              :title="'资产号-'+imgDialog.eqNo"
               :visible.sync="imgDialog.visible"
-              width="350px"
+              width="550px"
               center>
               <div class="qrcode" id="qrcode" ref="qrcode"></div>
               <span slot="footer" class="dialog-footer">
@@ -224,6 +226,7 @@ export default {
       },
       imgDialog: {
         visible: false,
+        computerId: '',
         eqNo: '',
       },
     };
@@ -233,11 +236,88 @@ export default {
   },
   methods: {
     openImgDialog(row) {
-      this.imgDialog.visible = true;
+      const self = this;
       this.imgDialog.eqNo = row.eqNo;
-      this.$nextTick (function () {
-        this.qrcode(row.eqNo);
-      })
+      this.imgDialog.computerId = row.computerId;
+
+      async.parallel({
+        disks: (cb) => {
+          const params = {
+            computerId: self.imgDialog.computerId,
+          };
+          api.get('/api/disk/list', params).then((res) => {
+            cb(null, res);
+          });
+        },
+        mems: (cb) => {
+          const params = {
+            computerId: self.imgDialog.computerId,
+          };
+          api.get('/api/mem/list', params).then((res) => {
+            cb(null, res);
+          });
+        },
+        videos: (cb) => {
+          const params = {
+            computerId: self.imgDialog.computerId,
+          };
+          api.get('/api/video/list', params).then((res) => {
+            cb(null, res);
+          });
+        },
+        macs: (cb) => {
+          const params = {
+            computerId: self.imgDialog.computerId,
+          };
+          api.get('/api/net/list', params).then((res) => {
+            cb(null, res);
+          });
+        },
+      }, (err, results) => {
+        if (!err) {
+          row['disks'] = [];
+          results.disks.content.forEach(disk => {
+            row.disks.push({
+              diskCapacity: disk.diskCapacity,
+              diskInterfaceType: disk.diskInterfaceType,
+              diskShellSn: disk.diskShellSn,
+              diskSn: disk.diskSn,
+            })
+          })
+          row['mems'] = [];
+          results.mems.content.forEach(mem => {
+            row.mems.push({
+              memCapacity: mem.memCapacity,
+              memType: mem.memCapacity,
+            })
+          })
+          row['videos'] = [];
+          results.videos.content.forEach(video => {
+            row.videos.push({
+              videoType: video.videoType,
+            })
+          });
+          row['macs'] = [];
+          results.macs.content.forEach(mac => {
+            row.macs.push({
+              macAddress: mac.macAddress,
+            })
+          });
+
+          delete row.computerId;
+          delete row.contractDetailId;
+          delete row.contractDetailStatus;
+          delete row.contractDetailUptTime;
+          delete row.contractId;
+          delete row.contractStatus;
+          delete row.ip;
+
+          self.imgDialog.visible = true;
+          self.$nextTick (function () {
+            self.qrcode(JSON.stringify(row));
+          })
+        }
+      });
     },
     closeImgDialog() {
       this.imgDialog.visible = false;
@@ -313,7 +393,7 @@ export default {
       async.parallel({
         disks: (cb) => {
           const params = {
-            computerId: self.computerId,
+            computerId: self.detailDialog.computerId,
           };
           api.get('/api/disk/list', params).then((res) => {
             cb(null, res);
@@ -321,7 +401,7 @@ export default {
         },
         mems: (cb) => {
           const params = {
-            computerId: self.computerId,
+            computerId: self.detailDialog.computerId,
           };
           api.get('/api/mem/list', params).then((res) => {
             cb(null, res);
@@ -329,7 +409,7 @@ export default {
         },
         videos: (cb) => {
           const params = {
-            computerId: self.computerId,
+            computerId: self.detailDialog.computerId,
           };
           api.get('/api/video/list', params).then((res) => {
             cb(null, res);
@@ -337,7 +417,7 @@ export default {
         },
         macs: (cb) => {
           const params = {
-            computerId: self.computerId,
+            computerId: self.detailDialog.computerId,
           };
           api.get('/api/net/list', params).then((res) => {
             cb(null, res);
@@ -367,9 +447,11 @@ export default {
     qrcode (text) {
       document.getElementById('qrcode').innerHTML = '';
       let qrcode = new QRCode('qrcode', {
-        width: 200,  // 设置宽度
-        height: 200, // 设置高度
-        text: text
+        render: "canvas",
+        width: 400,  // 设置宽度
+        height: 400, // 设置高度
+        text: text,
+        correctLevel: 0,
       })
     },
   },
