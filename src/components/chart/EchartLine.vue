@@ -23,11 +23,12 @@ export default {
     },
     xAxisData: {
       type: Array,
-      default: () => (['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']),
+      default: () => (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']),
     },
     seriesData: {
       type: Array,
-      default: () => ([820, 932, 901, 934, 1290, 1330, 1320]),
+      default: () => ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+        19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]),
     },
     titleName: {
       type: String,
@@ -38,6 +39,13 @@ export default {
     return {
       chart: null,
     };
+  },
+  watch: {
+    seriesData(val) {
+      if (val && val.length > 0) {
+        this.initChart();
+      }
+    },
   },
   mounted() {
     this.initChart();

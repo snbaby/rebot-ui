@@ -68,7 +68,7 @@ export default {
     },
   },
   watch: {
-    'doughnutData.data': (val) => {
+    'doughnutData.data': function (val) {
       if (val && val.length > 0) {
         this.initChart();
       }
@@ -96,7 +96,7 @@ export default {
         },
         tooltip: {
           trigger: 'item',
-          formatter: '合同号：{b} <br/> 完成数：{c} <br/> 总完成比率：({d}%)',
+          formatter: '合同号：{b} <br/> 验机数：{c} <br/>',
         },
         legend: {
           orient: 'vertical',
