@@ -68,6 +68,7 @@ export default {
     },
   },
   watch: {
+    // eslint-disable-next-line
     'doughnutData.data': function (val) {
       if (val && val.length > 0) {
         this.initChart();

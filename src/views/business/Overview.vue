@@ -160,7 +160,6 @@ export default {
           self.weekXAxisData = dayArray;
           self.weekSeriesData = results;
         }
-        console.log(self.weekXAxisData, self.weekSeriesData);
       });
     },
     initVerfiedMonth() {
@@ -189,7 +188,6 @@ export default {
           self.monthXAxisData = dayArray;
           self.monthSeriesData = results;
         }
-        console.log(self.monthXAxisData, self.monthSeriesData);
       });
     },
     getWeek(i) {
