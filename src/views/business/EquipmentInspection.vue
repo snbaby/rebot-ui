@@ -5,6 +5,11 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>设备验机</span>
+            <el-button :disabled="tableData.length==0"
+                       class="btn_inspection_report_export"
+                       @click="start" type="text">
+              启动验机
+            </el-button>
           </div>
           <el-row>
             <el-col>
@@ -151,6 +156,16 @@ export default {
     handleCurrentChange(val) {
       this.pageNo = val;
       this.queryPage();
+    },
+    start() {
+      const self = this;
+      const params = {};
+      api.get('/api/inspection/start', params).then(() => {
+        self.$notify.success({
+          title: '成功',
+          message: '启动验机成功',
+        });
+      });
     },
     queryPage() {
       const self = this;
