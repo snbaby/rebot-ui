@@ -80,6 +80,13 @@
                     </el-switch>
                   </template>
                 </el-table-column>
+                <el-table-column label="操作">
+                  <template slot-scope="scope">
+                    <el-button @click="handleDelete(scope.row)" type="text" size="small">
+                      删除
+                    </el-button>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-col>
           </el-row>
@@ -138,6 +145,16 @@ export default {
     this.queryPage();
   },
   methods: {
+    handleDelete(row) {
+      const self = this;
+      api.del(`/api/contract/${row.id}`).then(() => {
+        self.queryPage();
+        self.$notify.success({
+          title: '成功',
+          message: `删除合同编号${row.contract}成功`,
+        });
+      });
+    },
     saveDialog() {
       this.$refs.ruleForm.validate((valid) => {
         if (!valid) {

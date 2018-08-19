@@ -72,6 +72,9 @@
                                @click="openDetailDialog(scope.row.computerId, scope.row.eqNo)">
                       详情
                     </el-button>
+                    <el-button @click="handleDelete(scope.row)" type="text" size="small">
+                      删除
+                    </el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -235,6 +238,16 @@ export default {
     this.queryContract();
   },
   methods: {
+    handleDelete(row) {
+      const self = this;
+      api.del(`/api/contract-detail/${row.contractDetailId}`).then(() => {
+        self.queryPage();
+        self.$notify.success({
+          title: '成功',
+          message: `删除设备统一编号${row.eqNo}成功`,
+        });
+      });
+    },
     openImgDialog(row) {
       const self = this;
       this.imgDialog.eqNo = row.eqNo;

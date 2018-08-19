@@ -34,6 +34,9 @@
                                @click="confirm(scope.row.contractDetailId, scope.row.eqNo)">
                       验机
                     </el-button>
+                    <el-button @click="handleDelete(scope.row)" type="text" size="small">
+                      删除
+                    </el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -153,6 +156,16 @@ export default {
     this.queryPage();
   },
   methods: {
+    handleDelete(row) {
+      const self = this;
+      api.del(`/api/contract-detail/${row.contractDetailId}`).then(() => {
+        self.queryPage();
+        self.$notify.success({
+          title: '成功',
+          message: `删除设备统一编号${row.eqNo}成功`,
+        });
+      });
+    },
     handleCurrentChange(val) {
       this.pageNo = val;
       this.queryPage();
