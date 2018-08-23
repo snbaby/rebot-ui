@@ -24,13 +24,13 @@
                 <el-table-column property="cpu" label="CPU型号"></el-table-column>
                 <el-table-column property="opInstallDate" label="操作系统安装时间">
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="140">
                   <template slot-scope="scope">
-                    <el-button type="text" v-if="scope.row.computerId!=''"
+                    <el-button type="text" size="small" v-if="scope.row.computerId!=''"
                                @click="openDetailDialog(scope.row.computerId, scope.row.eqNo)">
                       详情
                     </el-button>
-                    <el-button type="text" v-if="scope.row.computerId!=''"
+                    <el-button type="text" size="small" v-if="scope.row.computerId!=''"
                                @click="confirm(scope.row.contractDetailId, scope.row.eqNo)">
                       验机
                     </el-button>

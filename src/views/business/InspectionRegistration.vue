@@ -279,7 +279,7 @@ export default {
                 itemTemp.contractTotal = results.total;
                 itemTemp.contractConfirm = results.confirm;
                 itemTemp.contractUnConfirm = results.total - results.confirm;
-                itemTemp.contractConfirmRate = (results.confirm * 100) / results.total;
+                itemTemp.contractConfirmRate = ((results.confirm * 100) / results.total).toFixed(2);
                 itemTemp.contractConfirmRate += `${rate}`;
                 itemTemp.contractConfirmLastWeek = results.confirmLastWeek;
                 itemTemp.crtTime = utils.dateFormat(itemTemp.crtTime, 'yyyy-MM-dd hh:mm:ss');

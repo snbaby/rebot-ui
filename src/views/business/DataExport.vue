@@ -43,8 +43,8 @@
           <el-row>
             <el-col>
               <el-table :data="tableData" stripe>
-                <el-table-column type="index" label="序号"></el-table-column>
-                <el-table-column label="二维图形">
+                <el-table-column fixed type="index" label="序号"></el-table-column>
+                <el-table-column fixed label="二维图形">
                   <template slot-scope="scope">
                     <img style="width: 30px;height: 30px"
                          src="../../../static/default/images/u003.png"
@@ -66,9 +66,9 @@
                 <el-table-column property="cpu" label="CPU型号"></el-table-column>
                 <el-table-column property="opInstallDate" label="操作系统安装时间">
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
-                    <el-button type="text" v-if="scope.row.computerId!=''"
+                    <el-button type="text" v-if="scope.row.computerId!=''" size="small"
                                @click="openDetailDialog(scope.row.computerId, scope.row.eqNo)">
                       详情
                     </el-button>
