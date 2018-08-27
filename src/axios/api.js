@@ -9,7 +9,7 @@ import {
 axios.defaults.baseURL = 'http://soc.seadun.com:8765';
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.timeout = 60000;
+axios.defaults.timeout = 120000;
 
 // 请求拦截器
 axios.interceptors.request.use(

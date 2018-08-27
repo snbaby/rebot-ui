@@ -9,7 +9,7 @@ const dateFormat = (dateObj, dateType) => {
   let dateTime = '';
   const date = new Date(dateObj);
   const year = date.getFullYear().toString();
-  const month = date.getMonth().toString();
+  const month = date.getMonth() + 1;
   const day = date.getDate().toString();
   const hour = date.getHours();
   const minutes = date.getMinutes();

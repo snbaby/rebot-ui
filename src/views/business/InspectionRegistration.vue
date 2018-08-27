@@ -27,21 +27,15 @@
                 <el-form-item label="设备类型" label-width="120px" prop="eqType">
                   <el-input v-model="dialogForm.eqType" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="计算机编号" label-width="120px" prop="eqNos">
-                  <el-select
-                    style="width: 100%"
-                    v-model="dialogForm.eqNos"
-                    multiple
-                    filterable
-                    allow-create
-                    default-first-option>
-                    <el-option
-                      v-for="item in dialogForm.options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
+                <el-form-item label="计算机编号" label-width="120px" prop="eqNoStart">
+                  <el-input placeholder="起始编号" v-model.number="dialogForm.eqNoStart">
+                    <template slot="prepend">W</template>
+                  </el-input>
+                </el-form-item>
+                <el-form-item label-width="120px" prop="eqNoEnd">
+                  <el-input placeholder="结束编号" v-model.number="dialogForm.eqNoEnd">
+                    <template slot="prepend">W</template>
+                  </el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
@@ -114,6 +108,8 @@ const async = require('async');
 export default {
   data() {
     return {
+      select: '',
+      input5: '',
       tableData: [],
       pageNo: 1,
       pageSize: 10,
@@ -123,8 +119,8 @@ export default {
         visible: false,
         contract: '',
         eqType: '',
-        eqNos: [],
-        options: [],
+        eqNoStart: '',
+        eqNoEnd: '',
       },
       rules: {
         contract: [
@@ -135,8 +131,13 @@ export default {
           { required: true, message: '请输入计算机类型', trigger: 'blur' },
           { max: 45, message: '长度在 1 到 45 个字符', trigger: 'blur' },
         ],
-        eqNos: [
-          { type: 'array', required: true, message: '请输入资产编号', trigger: 'blur' },
+        eqNoStart: [
+          { required: true, message: '请输入起始资产编号', trigger: 'blur' },
+          { type: 'number', max: 99999, message: '资产编号只能为数字,且最大只能为99999', trigger: 'blur' },
+        ],
+        eqNoEnd: [
+          { required: true, message: '请输入结束资产编号', trigger: 'blur' },
+          { type: 'number', max: 99999, message: '资产编号只能为数字,且最大只能为99999', trigger: 'blur' },
         ],
       },
     };
@@ -156,15 +157,35 @@ export default {
       });
     },
     saveDialog() {
+      const self = this;
       this.$refs.ruleForm.validate((valid) => {
         if (!valid) {
           return false;
         }
-        const self = this;
+        const eqNosArray = [];
+        if (self.dialogForm.eqNoStart > self.dialogForm.eqNoEnd) {
+          const temp = self.dialogForm.eqNoStart;
+          self.dialogForm.eqNoStart = self.dialogForm.eqNoEnd;
+          self.dialogForm.eqNoEnd = temp;
+        }
+
+        for (let i = self.dialogForm.eqNoStart; i <= self.dialogForm.eqNoEnd; i += 1) {
+          if (i < 10) {
+            eqNosArray.push(`W0000${i}`);
+          } else if (i >= 10 && i <= 99) {
+            eqNosArray.push(`W000${i}`);
+          } else if (i >= 100 && i <= 999) {
+            eqNosArray.push(`W00${i}`);
+          } else if (i >= 1000 && i <= 9999) {
+            eqNosArray.push(`W0${i}`);
+          } else if (i >= 10000 && i <= 99999) {
+            eqNosArray.push(`W${i}`);
+          }
+        }
         const params = {
           contract: self.dialogForm.contract,
           eqType: self.dialogForm.eqType,
-          eqNos: self.dialogForm.eqNos,
+          eqNos: eqNosArray,
         };
         api.post('/api/inspection/import', params).then(() => {
           self.queryPage();
@@ -181,8 +202,8 @@ export default {
       this.dialogForm.visible = true;
       this.dialogForm.contract = '';
       this.dialogForm.eqType = '';
-      this.dialogForm.eqNos = [];
-      this.dialogForm.options = [];
+      this.dialogForm.eqNoStart = '';
+      this.dialogForm.eqNoEnd = '';
     },
     handleAvatarSuccess(response, file) {
       this.$notify.success({
