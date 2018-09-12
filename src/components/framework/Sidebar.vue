@@ -23,6 +23,24 @@
           <span>数据导出</span>
         </el-menu-item>
       </el-submenu>
+      <el-submenu index="/rebot/system">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+          <span>系统管理</span>
+        </template>
+        <el-menu-item index="/rebot/system/department">
+          <span>部门管理</span>
+        </el-menu-item>
+        <el-menu-item index="/rebot/system/role">
+          <span>角色管理</span>
+        </el-menu-item>
+        <el-menu-item index="/rebot/system/user">
+          <span>用户管理</span>
+        </el-menu-item>
+        <el-menu-item index="/rebot/system/log">
+          <span>日志管理</span>
+        </el-menu-item>
+      </el-submenu>
     </el-menu>
   </div>
 </template>

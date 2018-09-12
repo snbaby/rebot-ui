@@ -4,7 +4,9 @@ import Login from '../views/common/Login';
 import Rebot from '../views/common/Rebot';
 import Overview from '../views/business/Overview';
 import System from '../views/business/System';
-import TemplateManager from '../views/business/TemplateManager';
+import Department from '../views/business/Department';
+import Role from '../views/business/Role';
+import User from '../views/business/User';
 import Intelligent from '../views/business/Intelligent';
 import InspectionRegistration from '../views/business/InspectionRegistration';
 import EquipmentInspection from '../views/business/EquipmentInspection';
@@ -34,19 +36,6 @@ export const constantRouterMap = [
         component: Overview,
       },
       {
-        name: '系统配置管理',
-        path: 'system',
-        redirect: '/rebot/system/template_manager',
-        component: System,
-        children: [
-          {
-            name: '操作系统模板管理',
-            path: 'template_manager',
-            component: TemplateManager,
-          },
-        ],
-      },
-      {
         name: '智能验机',
         path: 'intelligent',
         component: Intelligent,
@@ -69,7 +58,34 @@ export const constantRouterMap = [
           },
         ],
       },
-
+      {
+        name: '系统管理',
+        path: 'system',
+        component: System,
+        redirect: '/rebot/system/department',
+        children: [
+          {
+            name: '部门管理',
+            path: 'department',
+            component: Department,
+          },
+          {
+            name: '角色管理',
+            path: 'role',
+            component: Role,
+          },
+          {
+            name: '用户管理',
+            path: 'user',
+            component: User,
+          },
+          {
+            name: '日志管理',
+            path: 'log',
+            component: DataExport,
+          },
+        ],
+      },
     ],
   },
   {

@@ -72,7 +72,12 @@ export default {
             userName: self.loginForm.username,
             userPassword: self.loginForm.password,
           };
-          api.post('/api/auth/login', params).then(() => {
+          api.post('/api/auth/login', params).then((res) => {
+            sessionStorage.setItem('roleId', res.content.roleId);
+            sessionStorage.setItem('username', res.content.username);
+            sessionStorage.setItem('departmentId', res.content.departmentId);
+            sessionStorage.setItem('departmentList', JSON.stringify(res.content.departmentList));
+            sessionStorage.setItem('roleList', JSON.stringify(res.content.roleList));
             self.$router.push('/rebot');
           });
         }
