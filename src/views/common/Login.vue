@@ -35,8 +35,8 @@ export default {
       }
     };
     const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('密码不能小于5位'));
+      if (value.length < 8) {
+        callback(new Error('密码不能小于8位'));
       } else {
         callback();
       }
@@ -75,6 +75,7 @@ export default {
           api.post('/api/auth/login', params).then((res) => {
             sessionStorage.setItem('roleId', res.content.roleId);
             sessionStorage.setItem('username', res.content.username);
+            sessionStorage.setItem('userId', res.content.userId);
             sessionStorage.setItem('departmentId', res.content.departmentId);
             sessionStorage.setItem('departmentList', JSON.stringify(res.content.departmentList));
             sessionStorage.setItem('roleList', JSON.stringify(res.content.roleList));

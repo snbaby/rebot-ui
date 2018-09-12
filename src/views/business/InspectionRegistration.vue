@@ -27,6 +27,9 @@
                 <el-form-item label="设备类型" label-width="120px" prop="eqType">
                   <el-input v-model="dialogForm.eqType" auto-complete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="设备型号" label-width="120px" prop="eqModel">
+                  <el-input v-model="dialogForm.eqModel" auto-complete="off"></el-input>
+                </el-form-item>
                 <el-form-item label="计算机编号" label-width="120px" prop="eqNoStart">
                   <el-input placeholder="起始编号" v-model.number="dialogForm.eqNoStart">
                     <template slot="prepend">W</template>
@@ -119,6 +122,7 @@ export default {
         visible: false,
         contract: '',
         eqType: '',
+        eqModel: '',
         eqNoStart: '',
         eqNoEnd: '',
       },
@@ -129,6 +133,10 @@ export default {
         ],
         eqType: [
           { required: true, message: '请输入计算机类型', trigger: 'blur' },
+          { max: 45, message: '长度在 1 到 45 个字符', trigger: 'blur' },
+        ],
+        eqModel: [
+          { required: true, message: '请输入计算机型号', trigger: 'blur' },
           { max: 45, message: '长度在 1 到 45 个字符', trigger: 'blur' },
         ],
         eqNoStart: [
@@ -185,6 +193,7 @@ export default {
         const params = {
           contract: self.dialogForm.contract,
           eqType: self.dialogForm.eqType,
+          eqModel: self.dialogForm.eqModel,
           eqNos: eqNosArray,
         };
         api.post('/api/inspection/import', params).then(() => {
@@ -202,6 +211,7 @@ export default {
       this.dialogForm.visible = true;
       this.dialogForm.contract = '';
       this.dialogForm.eqType = '';
+      this.dialogForm.eqModel = '';
       this.dialogForm.eqNoStart = '';
       this.dialogForm.eqNoEnd = '';
     },

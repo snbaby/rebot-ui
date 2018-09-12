@@ -178,7 +178,8 @@ export default {
         ],
         userPassword: [
           { required: true, message: '请输入用户密码', trigger: 'blur' },
-          { max: 45, message: '长度在 1 到 45 个字符', trigger: 'blur' },
+          { max: 45, message: '长度在 8 到 45 个字符', trigger: 'blur' },
+          { min: 8, message: '长度在 8 到 45 个字符', trigger: 'blur' },
         ],
         departmentId: [
           { required: true, message: '请选择部门', trigger: 'blur' },

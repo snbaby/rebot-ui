@@ -23,7 +23,7 @@
           <span>数据导出</span>
         </el-menu-item>
       </el-submenu>
-      <el-submenu index="/rebot/system">
+      <el-submenu index="/rebot/system" v-if="username == 'admin'">
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span>系统管理</span>
@@ -48,12 +48,21 @@
 <script>
 export default {
   name: 'vSidebar',
+  data() {
+    return {
+      name: 'linxin',
+    };
+  },
   props: {
     routes: {
       type: Array,
     },
   },
   computed: {
+    username() {
+      const username = sessionStorage.getItem('username');
+      return username || this.name;
+    },
   },
   created() {
   },

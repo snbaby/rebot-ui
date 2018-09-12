@@ -7,6 +7,7 @@ import System from '../views/business/System';
 import Department from '../views/business/Department';
 import Role from '../views/business/Role';
 import User from '../views/business/User';
+import Log from '../views/business/Log';
 import Intelligent from '../views/business/Intelligent';
 import InspectionRegistration from '../views/business/InspectionRegistration';
 import EquipmentInspection from '../views/business/EquipmentInspection';
@@ -82,7 +83,7 @@ export const constantRouterMap = [
           {
             name: '日志管理',
             path: 'log',
-            component: DataExport,
+            component: Log,
           },
         ],
       },

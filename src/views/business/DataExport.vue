@@ -58,7 +58,8 @@
                 </el-table-column>
                 <el-table-column property="contract" label="合同编号"></el-table-column>
                 <el-table-column property="eqNo" label="设备统一编号"></el-table-column>
-                <el-table-column property="eqType" label="设备型号"></el-table-column>
+                <el-table-column property="eqType" label="设备类型"></el-table-column>
+                <el-table-column property="eqModel" label="设备型号"></el-table-column>
                 <el-table-column property="eqNo" label="计算机名"></el-table-column>
                 <el-table-column property="biosSn" label="设备序列号"></el-table-column>
                 <el-table-column property="opSystem" label="操作系统"></el-table-column>
