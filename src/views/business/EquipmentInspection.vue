@@ -10,6 +10,8 @@
                        @click="start" type="text">
               启动验机
             </el-button>
+            <el-button class="btn_template_manual" type="text" @click="queryPage"
+                       icon="el-icon-refresh">刷新</el-button>
           </div>
           <el-row>
             <el-col>

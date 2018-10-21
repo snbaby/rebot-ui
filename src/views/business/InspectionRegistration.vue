@@ -17,6 +17,8 @@
               >
               <el-button class="btn_template_auto" type="text">自动入库</el-button>
             </el-upload>
+            <el-button class="btn_template_manual" type="text" @click="queryPage"
+                       icon="el-icon-refresh">刷新</el-button>
           </div>
           <div>
             <el-dialog title="入库" :visible.sync="dialogForm.visible">
@@ -53,6 +55,8 @@
                 <el-table-column type="index" label="序号">
                 </el-table-column>
                 <el-table-column property="contract" label="合同编号" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column property="eqModel" label="设备型号" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column property="contractTotal" label="合同总数">
                 </el-table-column>
@@ -301,6 +305,13 @@ export default {
                   cbParallel(null, res.content.total);
                 });
               },
+              eqModel: (cbParallel) => {
+                const params = {
+                };
+                api.get(`/api/contract-detail/contract/${item.id}`, params).then((res) => {
+                  cbParallel(null, res.content);
+                });
+              },
             }, (err, results) => {
               if (err) {
                 cbMap(null);
@@ -314,6 +325,7 @@ export default {
                 itemTemp.contractConfirmRate += `${rate}`;
                 itemTemp.contractConfirmLastWeek = results.confirmLastWeek;
                 itemTemp.crtTime = utils.dateFormat(itemTemp.crtTime, 'yyyy-MM-dd hh:mm:ss');
+                itemTemp.eqModel = results.eqModel;
                 cbMap(null, itemTemp);
               }
             });

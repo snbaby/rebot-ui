@@ -39,6 +39,8 @@
                        @click="exportFile" type="text">
               导出验机报告
             </el-button>
+            <el-button class="btn_template_manual" type="text" @click="queryPage"
+                       icon="el-icon-refresh">刷新</el-button>
           </div>
           <el-row>
             <el-col>
