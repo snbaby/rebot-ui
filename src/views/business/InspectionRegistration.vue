@@ -86,6 +86,9 @@
                     <el-button @click="handleDelete(scope.row)" type="text" size="small">
                       删除
                     </el-button>
+                    <el-button @click="handleExport(scope.row)" type="text" size="small">
+                      导出
+                    </el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -167,6 +170,9 @@ export default {
           message: `删除合同编号${row.contract}成功`,
         });
       });
+    },
+    handleExport(row) {
+      window.open(`http://soc.seadun.com:8765/api/file/contract?contractId=${row.id}`);
     },
     saveDialog() {
       const self = this;
