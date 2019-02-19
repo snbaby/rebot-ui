@@ -163,12 +163,19 @@ export default {
   methods: {
     handleDelete(row) {
       const self = this;
-      api.del(`/api/contract/${row.id}`).then(() => {
-        self.queryPage();
-        self.$notify.success({
-          title: '成功',
-          message: `删除合同编号${row.contract}成功`,
+      self.$confirm(`删除合同编号${row.contract}将无法进行恢复, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        api.del(`/api/contract/${row.id}`).then(() => {
+          self.queryPage();
+          self.$notify.success({
+            title: '成功',
+            message: `删除合同编号${row.contract}成功`,
+          });
         });
+      }).catch(() => {
       });
     },
     handleExport(row) {

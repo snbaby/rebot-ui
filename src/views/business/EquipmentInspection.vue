@@ -161,12 +161,19 @@ export default {
   methods: {
     handleDelete(row) {
       const self = this;
-      api.del(`/api/contract-detail/${row.contractDetailId}`).then(() => {
-        self.queryPage();
-        self.$notify.success({
-          title: '成功',
-          message: `删除设备统一编号${row.eqNo}成功`,
+      self.$confirm(`资产${row.eqNo}清空后将无法进行恢复, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        api.del(`/api/contract-detail/${row.contractDetailId}`).then(() => {
+          self.queryPage();
+          self.$notify.success({
+            title: '成功',
+            message: `清空设备统一编号${row.eqNo}成功`,
+          });
         });
+      }).catch(() => {
       });
     },
     handleCurrentChange(val) {
