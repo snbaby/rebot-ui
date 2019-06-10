@@ -33,13 +33,13 @@
                   <el-input v-model="dialogForm.eqModel" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="计算机编号" label-width="120px" prop="eqNoStart">
-                  <el-input placeholder="起始编号" v-model.number="dialogForm.eqNoStart">
-                    <template slot="prepend">W</template>
+                  <el-input placeholder="起始编号" v-model.number="dialogForm.eqNoStart" class="input-with-input">
+                    <el-input slot="prepend" v-model="prepend" placeholder="请输入前缀"></el-input>
                   </el-input>
                 </el-form-item>
                 <el-form-item label-width="120px" prop="eqNoEnd">
-                  <el-input placeholder="结束编号" v-model.number="dialogForm.eqNoEnd">
-                    <template slot="prepend">W</template>
+                  <el-input placeholder="结束编号" v-model.number="dialogForm.eqNoEnd" class="input-with-input">
+                    <el-input slot="prepend" v-model="prepend" placeholder="请输入前缀"></el-input>
                   </el-input>
                 </el-form-item>
               </el-form>
@@ -118,6 +118,7 @@ const async = require('async');
 export default {
   data() {
     return {
+      prepend: 'DA' + this.getDate(),
       select: '',
       input5: '',
       tableData: [],
@@ -148,19 +149,30 @@ export default {
         ],
         eqNoStart: [
           { required: true, message: '请输入起始资产编号', trigger: 'blur' },
-          { type: 'number', max: 99999, message: '资产编号只能为数字,且最大只能为99999', trigger: 'blur' },
+          { type: 'number', max: 999, message: '资产编号只能为数字,且最大只能为999', trigger: 'blur' },
         ],
         eqNoEnd: [
           { required: true, message: '请输入结束资产编号', trigger: 'blur' },
-          { type: 'number', max: 99999, message: '资产编号只能为数字,且最大只能为99999', trigger: 'blur' },
+          { type: 'number', max: 999, message: '资产编号只能为数字,且最大只能为999', trigger: 'blur' },
         ],
       },
     };
   },
   created() {
     this.queryPage();
+    this.getDate()
   },
   methods: {
+    getDate(){
+      var d = new Date();
+      var curr_date = d.getDate();
+      var curr_month = d.getMonth() + 1;
+      var curr_year = d.getFullYear();
+      String(curr_month).length < 2 ? (curr_month = "0" + curr_month): curr_month;
+      String(curr_date).length < 2 ? (curr_date = "0" + curr_date): curr_date;
+      var yyyyMMdd = curr_year + "" + curr_month +""+ curr_date;
+      return yyyyMMdd;
+    },
     handleDelete(row) {
       const self = this;
       self.$confirm(`删除合同编号${row.contract}将无法进行恢复, 是否继续?`, '提示', {
@@ -196,15 +208,11 @@ export default {
 
         for (let i = self.dialogForm.eqNoStart; i <= self.dialogForm.eqNoEnd; i += 1) {
           if (i < 10) {
-            eqNosArray.push(`W0000${i}`);
+            eqNosArray.push(`${self.prepend}00${i}`);
           } else if (i >= 10 && i <= 99) {
-            eqNosArray.push(`W000${i}`);
+            eqNosArray.push(`${self.prepend}0${i}`);
           } else if (i >= 100 && i <= 999) {
-            eqNosArray.push(`W00${i}`);
-          } else if (i >= 1000 && i <= 9999) {
-            eqNosArray.push(`W0${i}`);
-          } else if (i >= 10000 && i <= 99999) {
-            eqNosArray.push(`W${i}`);
+            eqNosArray.push(`${self.prepend}${i}`);
           }
         }
         const params = {
@@ -360,5 +368,12 @@ export default {
 };
 </script>
 <style>
-
+  .input-with-input .el-input {
+    width: 130px;
+  }
+  .input-with-input .el-input-group__prepend {
+    background-color: #fff;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 </style>
